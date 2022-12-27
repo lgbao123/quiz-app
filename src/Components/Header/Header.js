@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 function Header() {
     return (
         <Navbar bg="light" expand="lg">
@@ -15,9 +15,9 @@ function Header() {
                         {/* <Nav.Link href="#home">Home</Nav.Link>
                         <Nav.Link href="#link">User</Nav.Link>
                         <Nav.Link href="#link">Admin</Nav.Link> */}
-                        <Link to='/' className='nav-link'>Home</Link>
-                        <Link to='/user' className='nav-link'>User</Link>
-                        <Link to='/admin' className='nav-link'>Admin</Link>
+                        <NavLink to='/' className='nav-link'>Home</NavLink>
+                        <NavLink to='/user' className='nav-link'>User</NavLink>
+                        <NavLink to='/admin' className='nav-link'>Admin</NavLink>
                     </Nav>
                     <Nav >
 
