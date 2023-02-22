@@ -1,4 +1,5 @@
 import 'react-pro-sidebar/dist/css/styles.css';
+import './SideBar.scss'
 import {
     ProSidebar,
     Menu,
@@ -14,17 +15,17 @@ import { useState } from 'react';
 
 const SideBar = (props) => {
     const { collapsed, image, toggled, handleToggleSidebar } = props;
-    const [newcollapsed, setCollapsed] = useState(collapsed)
+
     return (
         <>
             <ProSidebar
                 image={sidebarBg}
-                collapsed={newcollapsed}
+                collapsed={collapsed}
                 toggled={toggled}
                 breakPoint="md"
                 onToggle={handleToggleSidebar}
             >
-                <FaBars className='far-bar' onClick={() => { setCollapsed(!newcollapsed) }} />
+
                 <SidebarHeader>
                     <div
                         style={{

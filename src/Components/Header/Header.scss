@@ -1,0 +1,29 @@
+.header-container {
+
+
+   @media (min-width: 1400px) {
+
+      .container,
+      .container-lg,
+      .container-md,
+      .container-sm,
+      .container-xl,
+      .container-xxl {
+         max-width: 100%;
+      }
+   }
+
+   position: fixed;
+   width: 100%;
+   z-index: 1000;
+
+   .btn {
+
+      transition: .2s ease-in;
+
+      &:hover {
+         opacity: 0.4;
+      }
+   }
+
+}

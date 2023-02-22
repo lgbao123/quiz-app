@@ -1,21 +1,10 @@
+$highlight-color: #dee2ec;
+
 .admin-container {
     display: flex;
 
-    .sidebar {
-        height: 100vh;
 
-        .far-bar {
-            position: absolute;
-            right: 0;
-            top: 0;
-            margin: 8px 8px 0 0px;
-            font-size: 24px;
 
-            &:hover {
-                cursor: pointer;
-            }
-        }
-    }
 
 
 }
