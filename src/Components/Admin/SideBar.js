@@ -1,5 +1,4 @@
-import 'react-pro-sidebar/dist/css/styles.css';
-import './SideBar.scss'
+import { Link, NavLink } from 'react-router-dom';
 import {
     ProSidebar,
     Menu,
@@ -7,90 +6,120 @@ import {
     SubMenu,
     SidebarHeader,
     SidebarFooter,
-    SidebarContent,
+    SidebarContent
 } from 'react-pro-sidebar';
-import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart, FaBars } from 'react-icons/fa';
+import {
+    FaUser,
+    FaAngleDoubleLeft,
+    FaAngleDoubleRight,
+    FaTachometerAlt,
+    FaGem,
+    FaList,
+    FaRegLaughWink,
+    FaHeart
+} from 'react-icons/fa';
 import sidebarBg from '../../assets/bg2.jpg';
-import { useState } from 'react';
-
-const SideBar = (props) => {
-    const { collapsed, image, toggled, handleToggleSidebar } = props;
-
+import './SideBar.scss'
+const SideBar = ({
+    image,
+    collapsed,
+    toggled,
+    handleToggleSidebar,
+    handleCollapsedChange
+}) => {
     return (
-        <>
-            <ProSidebar
-                image={sidebarBg}
-                collapsed={collapsed}
-                toggled={toggled}
-                breakPoint="md"
-                onToggle={handleToggleSidebar}
-            >
-
-                <SidebarHeader>
-                    <div
-                        style={{
-                            padding: '24px',
-                            textTransform: 'uppercase',
-                            fontWeight: 'bold',
-                            fontSize: 14,
-                            letterSpacing: '1px',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                        }}
-                    >
-                        Admin
-                    </div>
-                </SidebarHeader>
-
-                <SidebarContent>
-                    <Menu iconShape="circle">
+        <ProSidebar
+            image={image ? sidebarBg : false}
+            collapsed={collapsed}
+            toggled={toggled}
+            onToggle={handleToggleSidebar}
+            breakPoint="md"
+        >
+            {/* Header */}
+            <SidebarHeader>
+                <Menu iconShape="circle">
+                    {collapsed ? (
                         <MenuItem
-                            icon={<FaTachometerAlt />}
-                            suffix={<span className="badge red">New</span>}
+                            icon={<FaAngleDoubleRight />}
+                            onClick={handleCollapsedChange}
+                        ></MenuItem>
+                    ) : (
+                        <MenuItem
+                            suffix={<FaAngleDoubleLeft />}
+                            onClick={handleCollapsedChange}
                         >
-                            dashboard
+                            <div
+                                style={{
+                                    padding: '9px',
+                                    textTransform: 'uppercase',
+                                    fontWeight: 'bold',
+                                    fontSize: 15,
+                                    letterSpacing: '1px'
+                                }}
+                            >
+                                Pro Sidebar
+                            </div>
                         </MenuItem>
-                        <MenuItem icon={<FaGem />}> components </MenuItem>
-                    </Menu>
-                    <Menu iconShape="circle">
-                        <SubMenu
-                            suffix={<span className="badge yellow">3</span>}
-                            icon={<FaRegLaughWink />}
-                            title="Bao"
-                        >
-                            <MenuItem> 1</MenuItem>
-                            <MenuItem> 2</MenuItem>
-                            <MenuItem> 3</MenuItem>
-                        </SubMenu>
-
-                    </Menu>
-                </SidebarContent>
-
-                <SidebarFooter style={{ textAlign: 'center' }}>
-                    <div
-                        className="sidebar-btn-wrapper"
-                        style={{
-                            padding: '20px 24px',
-                        }}
+                    )}
+                </Menu>
+            </SidebarHeader>
+            {/* Content */}
+            <SidebarContent>
+                <Menu iconShape="circle">
+                    <MenuItem
+                        icon={<FaTachometerAlt />}
+                        suffix={<span className="badge red">NEW</span>}
                     >
-                        <a
-                            href="https://github.com/azouaoui-med/react-pro-sidebar"
-                            target="_blank"
-                            className="sidebar-btn"
-                            rel="noopener noreferrer"
-                        >
-                            <FaGithub />
-                            <span style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                                viewSource
-                            </span>
-                        </a>
-                    </div>
-                </SidebarFooter>
-
-            </ProSidebar>
-        </>
-    )
-}
+                        Dashboard
+                        <NavLink to="/" />
+                    </MenuItem>
+                    {/* <MenuItem icon={<FaGem />}>Components </MenuItem> */}
+                    <MenuItem icon={<FaGem />}>
+                        Components <Link to="/components" />
+                    </MenuItem>
+                    <SubMenu
+                        suffix={<span className="badge yellow">3</span>}
+                        title={'With Suffix'}
+                        icon={<FaRegLaughWink />}
+                    >
+                        <MenuItem>Submenu 1</MenuItem>
+                        <MenuItem>Submenu 2</MenuItem>
+                        <MenuItem>Submenu 3</MenuItem>
+                    </SubMenu>
+                    <SubMenu
+                        prefix={<span className="badge gray">3</span>}
+                        title={'With Prefix'}
+                        icon={<FaHeart />}
+                    >
+                        <MenuItem>Submenu 1</MenuItem>
+                        <MenuItem>Submenu 2</MenuItem>
+                        <MenuItem>Submenu 3</MenuItem>
+                    </SubMenu>
+                    <SubMenu title={'Multi Level'} icon={<FaList />}>
+                        <MenuItem>Submenu 1 </MenuItem>
+                        <MenuItem>Submenu 2 </MenuItem>
+                        <SubMenu title={'Submenu 3'}>
+                            <MenuItem>Submenu 3.1 </MenuItem>
+                            <MenuItem>Submenu 3.2 </MenuItem>
+                        </SubMenu>
+                    </SubMenu>
+                </Menu>
+            </SidebarContent>
+            {/* Footer */}
+            <SidebarFooter style={{ textAlign: 'center' }}>
+                <div className="sidebar-btn-wrapper" style={{ padding: '16px' }}>
+                    <Link
+                        className="sidebar-btn"
+                        style={{ cursor: 'pointer' }}
+                        to="/profile"
+                    >
+                        <FaUser />
+                        <span>My Account</span>
+                    </Link>
+                </div>
+            </SidebarFooter>
+        </ProSidebar>
+    );
+};
 
 export default SideBar;

@@ -1,10 +1,22 @@
-$highlight-color: #dee2ec;
+@import '~react-pro-sidebar/dist/scss/styles.scss';
 
 .admin-container {
     display: flex;
 
+    .admin-sidebar {
+        .pro-sidebar {
+            height: 100vh !important;
+        }
+    }
 
+    .btn-toggle {
+        display: none;
+    }
 
-
+    @media (max-width: $breakpoint-md) {
+        .btn-toggle {
+            display: flex;
+        }
+    }
 
 }

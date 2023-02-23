@@ -1,130 +1,57 @@
-body {
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-		sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 
 * {
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+
 }
 
-// .App {
-// 	.header-container {
-// 		.navbar {
-// 			position: fixed;
-// 			width: 100%;
-// 			z-index: 10;
-// 			background-color: rgba(0, 0, 0, 0) !important;
-// 			padding-top: 16px;
-
-// 			.nav-link {
-// 				&.active {
-// 					color: red;
-// 				}
-// 			}
-
-// 			.btn-login {
-// 				background-color: transparent;
-// 				border-radius: 3px;
-// 				min-width: 90px;
-// 				// padding: 0 8px;
-// 				border: solid 1px black;
-// 				margin-right: 16px;
-
-// 			}
-
-// 			.btn-signup {
-// 				background-color: black;
-// 				color: white;
-// 				border-radius: 3px;
-// 				min-width: 90px;
-// 				// padding: 0 8px;
-// 				border: solid 1px black;
-// 			}
-
-// 			// overflow: hidden;
-// 		}
-
-
-
-// 	}
-
-// 	.main-container {
-// 		// margin-top: 56px !important;
-// 		width: 100%;
-
-// 		.app-content {
-// 			video {
-// 				width: 100%;
-// 				height: 100%;
-
-
-// 			}
-
-
-
-// 			.content {
-// 				position: absolute;
-// 				// left: 0;
-// 				// right: 0;
-// 				top: 80%;
-// 				// margin: 0 auto;
-// 				display: flex;
-// 				width: 100%;
-// 				justify-content: center;
-// 				// gap: 20px // flex-direction: column;
-
-// 				div {
-// 					margin: 0 40px;
-// 					width: 500px;
-
-// 					h1 {
-// 						font-size: 64px;
-// 						margin-bottom: 24px;
-// 					}
-
-// 					p {
-// 						font-size: 24px;
-// 						margin-bottom: 24px;
-// 					}
-
-// 					.btn-signup {
-// 						background-color: black;
-// 						color: white;
-// 						border-radius: 3px;
-// 						min-width: 90px;
-// 						padding: 10px 20px;
-
-// 						border: solid 1px black;
-// 						transition: ease 0.3s;
-
-// 						&:hover {
-// 							opacity: 0.6;
-// 						}
-// 					}
-
-
-// 				}
-
-// 			}
-
-// 		}
-// 	}
-
-// 	@media (min-width: 1400px) {
-
-// 		.container,
-// 		.container-lg,
-// 		.container-md,
-// 		.container-sm,
-// 		.container-xl,
-// 		.container-xxl {
-// 			max-width: 95%;
-// 		}
-// 	}
+// :root {
+// 	--PrimaryColor: hsl(26, 93%, 50%);
+// 	--HoverColor: ☐hsl(26, 90%, 42%);
+// 	--whiteColor: hsl(0, 0%, 100%);
+// 	--blackColor: Ohsl(0, 0%, 18%);
+// 	--textColor: ☐hsl(240, 1%, 48%);
+// 	--whiteColorDeam: hsl(0, 0%, 93%);
+// 	--greyBg: hsl(0, 0%, 96%);
+// 	--greyText: rgb(190, 190, 190);
+// 	--inputColor: hsl(330, 12%, 97%);
 // }
+
+a {
+	text-decoration: none;
+}
+
+li {
+	list-style: none;
+}
+
+.flex {
+	display: flex;
+	align-items: center;
+}
+
+.grid {
+	display: grid;
+	align-items: center;
+}
+
+
+.icon {
+	cursor: pointer;
+	font-size: 2rem;
+	color: red;
+}
+
+img,
+video {
+	width: 100%;
+	height: auto;
+}
+
+input {
+	font-size: 100%;
+}

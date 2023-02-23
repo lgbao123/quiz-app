@@ -1,11 +1,11 @@
-$highlight-color: #dee2ec;
-
-.sidebar {
-    height: 100vh;
-
-}
-
-
+$sidebar-bg-color: #1d1d1d;
+$submenu-bg-color: rgba(255, 255, 255, 0.05);
+$submenu-bg-color-collapsed: rgba(29, 29, 29, 0.95);
+$sidebar-color: #adadad;
+$highlight-color: #d8d8d8;
+$icon-bg-color: rgba(255, 255, 255, 0.05);
+$icon-size: 35px;
+@import '~react-pro-sidebar/dist/scss/styles.scss';
 
 .sidebar-btn-wrapper {
     display: flex;
@@ -13,8 +13,6 @@ $highlight-color: #dee2ec;
     justify-content: center;
 
     .sidebar-btn {
-        transition: width 0.3s;
-        width: 150px;
         padding: 1px 15px;
         border-radius: 40px;
         background: rgba(255, 255, 255, 0.05);
@@ -35,6 +33,12 @@ $highlight-color: #dee2ec;
 
         &:hover {
             color: $highlight-color;
+        }
+    }
+
+    @media (max-width: $breakpoint-md) {
+        .btn-toggle {
+            display: flex;
         }
     }
 }

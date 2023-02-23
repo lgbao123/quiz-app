@@ -1,5 +1,10 @@
 .header-container {
-
+   // background-color: red !important;
+   // height: 500px;
+   // top: 0;
+   // position: fixed;
+   // width: 100%;
+   // z-index: 1000;
 
    @media (min-width: 1400px) {
 
@@ -13,17 +18,50 @@
       }
    }
 
-   position: fixed;
-   width: 100%;
-   z-index: 1000;
+
 
    .btn {
 
       transition: .2s ease-in;
+      min-width: 90px;
+      margin-right: 1rem;
+      // &:hover {
+      //    opacity: 1;
+      // }
+   }
 
-      &:hover {
-         opacity: 0.4;
+   .active {
+      font-weight: 600;
+
+   }
+
+   @media screen and (max-width:768px) {
+      .btn {
+         margin-bottom: 0.7rem;
+         border: none;
+         margin-right: 0;
       }
+
+
+      .menu-item {
+         align-items: center;
+
+
+      }
+
+      .navbar {
+         // background-color: white !important;
+      }
+
+      // .navbar-list {
+      //    background-color: yellow !important;
+      //    position: absolute;
+      //    left: 0;
+      //    right: 0;
+      //    align-items: center;
+      //    top: 100%;
+      // }
+
    }
 
 }
