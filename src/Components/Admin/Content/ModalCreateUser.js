@@ -4,34 +4,58 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-function ModalCreateUser() {
-   const [show, setShow] = useState(false);
+import axios from 'axios'
+function ModalCreateUser(props) {
+   const { show, setShow } = props;
 
-   const handleClose = () => setShow(false);
-   const handleShow = () => setShow(true);
+   const handleClose = () => {
+      setShow(false);
+      setEmail('');
+      setPassWord('');
+      setUserName('');
+      setRole('USER');
+      setUserImage('');
+
+   }
    const [email, setEmail] = useState('')
    const [password, setPassWord] = useState('')
    const [username, setUserName] = useState('')
-   const [role, setRole] = useState('')
-   const [imageuser, setImageUser] = useState('')
+   const [role, setRole] = useState('USER')
+   const [userImage, setUserImage] = useState('')
    const [previewimageuser, setPreviewImageUser] = useState('')
    const handleUploadImage = (e) => {
 
       if (e.target && e.target.files && e.target.files[0]) {
          setPreviewImageUser(URL.createObjectURL(e.target.files[0]))
-         setImageUser(e.target.files[0])
+         setUserImage(e.target.files[0])
       }
    }
+   const handleSubmitCreateUser = async () => {
+      //validate
+
+      // Call API
+
+      const data = new FormData()
+      data.append("email", email)
+      data.append("password", password)
+      data.append("username", username)
+      data.append("role", role)
+      data.append("userImage", userImage)
+      // console.log([...data]);
+      let res = await axios.post('http://localhost:8081/api/v1/participant', data)
+   }
+   // Clean URL previewimage
    useEffect(() => {
       return () => {
          previewimageuser && URL.revokeObjectURL(previewimageuser)
       }
    }, [previewimageuser])
+
    return (
       <>
-         <Button variant="primary" onClick={handleShow}>
+         {/* <Button variant="primary" onClick={handleShow}>
             Launch static backdrop modal
-         </Button>
+         </Button> */}
 
          <Modal
             className='modal-section'
@@ -67,9 +91,9 @@ function ModalCreateUser() {
 
                      <Form.Group as={Col} controlId="formGridRole">
                         <Form.Label>Role</Form.Label>
-                        <Form.Select defaultValue="User" onChange={(e) => setRole(e.target.value)}>
-                           <option>User</option>
-                           <option>Admin</option>
+                        <Form.Select defaultValue={role} onChange={(e) => setRole(e.target.value)}>
+                           <option>USER</option>
+                           <option>ADMIN</option>
                         </Form.Select>
                      </Form.Group>
 
@@ -92,7 +116,7 @@ function ModalCreateUser() {
                <Button variant="secondary" onClick={handleClose}>
                   Close
                </Button>
-               <Button variant="primary">Acept</Button>
+               <Button variant="primary" onClick={handleSubmitCreateUser}>Acept</Button>
             </Modal.Footer>
          </Modal>
       </>
