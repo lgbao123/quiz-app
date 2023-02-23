@@ -68,40 +68,17 @@ const SideBar = ({
                 <Menu iconShape="circle">
                     <MenuItem
                         icon={<FaTachometerAlt />}
-                        suffix={<span className="badge red">NEW</span>}
                     >
                         Dashboard
-                        <NavLink to="/" />
+                        <NavLink to="/admin" />
                     </MenuItem>
-                    {/* <MenuItem icon={<FaGem />}>Components </MenuItem> */}
-                    <MenuItem icon={<FaGem />}>
-                        Components <Link to="/components" />
-                    </MenuItem>
-                    <SubMenu
-                        suffix={<span className="badge yellow">3</span>}
-                        title={'With Suffix'}
-                        icon={<FaRegLaughWink />}
-                    >
-                        <MenuItem>Submenu 1</MenuItem>
-                        <MenuItem>Submenu 2</MenuItem>
-                        <MenuItem>Submenu 3</MenuItem>
-                    </SubMenu>
-                    <SubMenu
-                        prefix={<span className="badge gray">3</span>}
-                        title={'With Prefix'}
-                        icon={<FaHeart />}
-                    >
-                        <MenuItem>Submenu 1</MenuItem>
-                        <MenuItem>Submenu 2</MenuItem>
-                        <MenuItem>Submenu 3</MenuItem>
-                    </SubMenu>
-                    <SubMenu title={'Multi Level'} icon={<FaList />}>
-                        <MenuItem>Submenu 1 </MenuItem>
-                        <MenuItem>Submenu 2 </MenuItem>
-                        <SubMenu title={'Submenu 3'}>
-                            <MenuItem>Submenu 3.1 </MenuItem>
-                            <MenuItem>Submenu 3.2 </MenuItem>
-                        </SubMenu>
+                    <SubMenu title={'Features'} icon={<FaList />}>
+                        <MenuItem>
+                            Quản lý người dùng
+                            <NavLink to="/admin/manage-user" />
+                        </MenuItem>
+                        <MenuItem>Quản lý câu hỏi </MenuItem>
+                        <MenuItem>Quản lý bài thi </MenuItem>
                     </SubMenu>
                 </Menu>
             </SidebarContent>
