@@ -1,20 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { getAllUser } from '../../../service/apiService'
-function ListUser() {
-   const [userList, setUserList] = useState([]);
-   useEffect(() => {
-      fetchAllUser();
-      console.log(userList);
-   }, [])
-   const fetchAllUser = async () => {
-      let res = await getAllUser();
+function ListUser(props) {
+   const { userList } = props
 
-      if (res && res.EC === 0) {
-         setUserList(res.DT)
-      }
-
-   }
-   console.log('render');
    return (
       <>
 
