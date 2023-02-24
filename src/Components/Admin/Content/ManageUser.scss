@@ -1,12 +1,17 @@
 .manageUser-container {
    padding: 0.7rem 1.5rem;
-   width: 100%;
+   // width: 100%;
+
+   .list-user {
+      // background-color: red;
+      // width: 90%;
+   }
 
 }
 
 .modal-section {
    .img-section {
-      width: 50%;
+      width: 30%;
       margin: 0 auto;
       border: dashed 1px #CCC;
       border-radius: 0.5rem;
@@ -15,12 +20,15 @@
       align-items: center;
       font-size: 22px;
       color: #CCC;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 5 /5;
+      padding: 0;
+      // border-radius: 50%;
+      // overflow: hidden;
 
       img {
          width: 100%;
          height: 100%;
-         object-fit: contain;
+         object-fit: cover;
       }
    }
 }

@@ -6,15 +6,15 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { toast } from 'react-toastify';
 import { postCreateNewUser } from '../../../service/apiService';
-function ModalCreateUser(props) {
-   const { show, setShow } = props;
+import _ from 'lodash'
+function ModalUpdateUser(props) {
+   const { show, setShow, dataUpdate } = props;
    const [email, setEmail] = useState('')
    const [password, setPassWord] = useState('')
-   const [username, setUserName] = useState('')
-   const [role, setRole] = useState('USER')
+   const [username, setUserName] = useState("")
+   const [role, setRole] = useState("USER")
    const [userImage, setUserImage] = useState('')
    const [previewimageuser, setPreviewImageUser] = useState('')
-
    const [isvalidemail, setIsValidEmail] = useState(true);
    const [isvalidpass, setIsValidPass] = useState(true);
    const [isvalidname, setIsValidName] = useState(true);
@@ -52,23 +52,23 @@ function ModalCreateUser(props) {
    }
    const handleSubmitCreateUser = async () => {
       //validate
-      if (isvalidemail && isvalidname && isvalidpass) {
+      // if (isvalidemail && isvalidname && isvalidpass) {
 
-         // Call API
-         // Gửi ảnh dùng formdata , dùng object sẽ không gửi được file
-         let data = await postCreateNewUser(email, password, username, role, userImage)
+      //    // Call API
+      //    // Gửi ảnh dùng formdata , dùng object sẽ không gửi được file
+      //    let data = await postCreateNewUser(email, password, username, role, userImage)
 
-         if (data && data.EC === 0) {
-            toast.success(data.EM);
-            handleClose();
-            await props.fetchAllUser();
-         }
-         if (data && data.EC !== 0) {
-            toast.error(data.EM);
-         }
+      //    if (data && data.EC === 0) {
+      //       toast.success(data.EM);
+      //       handleClose();
+      //       await props.fetchAllUser();
+      //    }
+      //    if (data && data.EC !== 0) {
+      //       toast.error(data.EM);
+      //    }
 
-         console.log('COMPO', data);
-      }
+      //    console.log('COMPO', data);
+      // }
       return;
    }
    // Clean URL previewimage
@@ -84,6 +84,18 @@ function ModalCreateUser(props) {
       password ? setIsValidPass(true) : setIsValidPass(false)
       username ? setIsValidName(true) : setIsValidName(false);
    }, [password, email, username])
+   useEffect(() => {
+      if (!_.isEmpty(dataUpdate)) {
+
+         setEmail(dataUpdate.email);
+         setUserName(dataUpdate.username);
+         setRole(dataUpdate.role)
+         if (dataUpdate.image) {
+            setPreviewImageUser(`data:image/png;base64,${dataUpdate.image}`)
+         } else { setPreviewImageUser('') }
+      }
+      // console.log(dataUpdate.role);
+   }, [dataUpdate])
    return (
       <>
          {/* <Button variant="primary" onClick={handleShow}>
@@ -99,23 +111,23 @@ function ModalCreateUser(props) {
             size="xl"
          >
             <Modal.Header closeButton>
-               <Modal.Title>Add New User</Modal.Title>
+               <Modal.Title>Edit User</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                <Form >
                   <Row className="mb-3">
                      <Form.Group as={Col} md={6} controlId="formGridEmail" className='mb-3'>
                         <Form.Label>Email</Form.Label>
-                        <Form.Control isInvalid={!isvalidemail} isValid={isvalidemail} type="email" placeholder="Enter email" value={email}
-                           onChange={(e) => setEmail(e.target.value)} />
+                        <Form.Control type="email" placeholder="Enter email" value={email}
+                           onChange={(e) => setEmail(e.target.value)} disabled />
                         <Form.Control.Feedback type="invalid">
                            Invalid Email
                         </Form.Control.Feedback>
                      </Form.Group>
                      <Form.Group as={Col} controlId="formGridPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control isInvalid={!isvalidpass} isValid={isvalidpass} type="password" placeholder="Password" value={password}
-                           onChange={(e) => setPassWord(e.target.value)} />
+                        <Form.Control type="password" placeholder="Password" value={password}
+                           onChange={(e) => setPassWord(e.target.value)} disabled />
                         <Form.Control.Feedback type="invalid">
                            Invalid Password
                         </Form.Control.Feedback>
@@ -130,6 +142,7 @@ function ModalCreateUser(props) {
                            Invalid Username
                         </Form.Control.Feedback>
                      </Form.Group>
+
 
                      <Form.Group as={Col} controlId="formGridRole">
                         <Form.Label>Role</Form.Label>
@@ -166,4 +179,4 @@ function ModalCreateUser(props) {
 }
 
 
-export default ModalCreateUser
+export default ModalUpdateUser

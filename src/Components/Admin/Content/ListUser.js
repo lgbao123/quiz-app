@@ -8,10 +8,10 @@ function ListUser(props) {
          <table className="table table-hover table-bordered table-responsive ">
             <thead className="text-light bg-dark">
                <tr>
-                  <th scope="col" className='col-1'>No</th>
-                  <th scope="col" className='col-2.5'>Username</th>
-                  <th scope="col" className='col-4'>Email</th>
-                  <th scope="col" className='col-1.5'>Role</th>
+                  <th scope="col" className='col-0.5'>No</th>
+                  <th scope="col" className='col'>Username</th>
+                  <th scope="col" className='col'>Email</th>
+                  <th scope="col" className='col'>Role</th>
                   <th scope="col" className='col-2'>Action</th>
                </tr>
             </thead>
@@ -25,7 +25,10 @@ function ListUser(props) {
                         <td>{element.role}</td>
                         <td className='d-flex mb-1' >
                            <button type="button" className="flex-fill me-1 btn btn-primary ">View</button>
-                           <button type="button" className="flex-fill me-1 btn btn-info ">Update</button>
+                           <button type="button"
+                              className="flex-fill me-1 btn btn-info "
+                              onClick={() => props.HandleClickModalUpdateUser(element)}
+                           >Update</button>
                            <button type="button" className="flex-fill me-1 btn btn-danger">Delete</button>
                         </td>
                      </tr>)
