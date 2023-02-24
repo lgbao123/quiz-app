@@ -5,8 +5,19 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import axios from 'axios'
+import { toast } from 'react-toastify';
 function ModalCreateUser(props) {
    const { show, setShow } = props;
+   const [email, setEmail] = useState('')
+   const [password, setPassWord] = useState('')
+   const [username, setUserName] = useState('')
+   const [role, setRole] = useState('USER')
+   const [userImage, setUserImage] = useState('')
+   const [previewimageuser, setPreviewImageUser] = useState('')
+
+   const [isvalidemail, setIsValidEmail] = useState(true);
+   const [isvalidpass, setIsValidPass] = useState(true);
+   const [isvalidname, setIsValidName] = useState(true);
 
    const handleClose = () => {
       setShow(false);
@@ -17,12 +28,6 @@ function ModalCreateUser(props) {
       setUserImage('');
 
    }
-   const [email, setEmail] = useState('')
-   const [password, setPassWord] = useState('')
-   const [username, setUserName] = useState('')
-   const [role, setRole] = useState('USER')
-   const [userImage, setUserImage] = useState('')
-   const [previewimageuser, setPreviewImageUser] = useState('')
    const handleUploadImage = (e) => {
 
       if (e.target && e.target.files && e.target.files[0]) {
@@ -30,19 +35,44 @@ function ModalCreateUser(props) {
          setUserImage(e.target.files[0])
       }
    }
+   const ValidateEmail = (mail) => {
+      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+         return (true)
+      }
+      return (false)
+   }
+   const CheckPassword = (inputtxt) => {
+      //[6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter]
+      var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+      if (inputtxt.value.match(passw)) {
+         return true;
+      } else {
+         return false;
+      }
+   }
    const handleSubmitCreateUser = async () => {
       //validate
+      if (isvalidemail && isvalidname && isvalidpass) {
 
-      // Call API
-
-      const data = new FormData()
-      data.append("email", email)
-      data.append("password", password)
-      data.append("username", username)
-      data.append("role", role)
-      data.append("userImage", userImage)
-      // console.log([...data]);
-      let res = await axios.post('http://localhost:8081/api/v1/participant', data)
+         // Call API
+         // Gửi ảnh dùng formdata , dùng object sẽ không gửi được file
+         const data = new FormData()
+         data.append("email", email)
+         data.append("password", password)
+         data.append("username", username)
+         data.append("role", role)
+         data.append("userImage", userImage)
+         let res = await axios.post('http://localhost:8081/api/v1/participant', data)
+         if (res.data && res.data.EC === 0) {
+            toast.success('Add success')
+            handleClose();
+         }
+         else {
+            toast.error(res.data.EM);
+         }
+         console.log(res.data);
+      }
+      return;
    }
    // Clean URL previewimage
    useEffect(() => {
@@ -51,6 +81,12 @@ function ModalCreateUser(props) {
       }
    }, [previewimageuser])
 
+   // Handle Validate
+   useEffect(() => {
+      ValidateEmail(email) ? setIsValidEmail(true) : setIsValidEmail(false)
+      password ? setIsValidPass(true) : setIsValidPass(false)
+      username ? setIsValidName(true) : setIsValidName(false);
+   }, [password, email, username])
    return (
       <>
          {/* <Button variant="primary" onClick={handleShow}>
@@ -69,24 +105,33 @@ function ModalCreateUser(props) {
                <Modal.Title>Add New User</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-               <Form>
+               <Form >
                   <Row className="mb-3">
                      <Form.Group as={Col} md={6} controlId="formGridEmail" className='mb-3'>
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <Form.Control isInvalid={!isvalidemail} isValid={isvalidemail} type="email" placeholder="Enter email" value={email}
+                           onChange={(e) => setEmail(e.target.value)} />
+                        <Form.Control.Feedback type="invalid">
+                           Invalid Email
+                        </Form.Control.Feedback>
                      </Form.Group>
-
                      <Form.Group as={Col} controlId="formGridPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassWord(e.target.value)} />
+                        <Form.Control isInvalid={!isvalidpass} isValid={isvalidpass} type="password" placeholder="Password" value={password}
+                           onChange={(e) => setPassWord(e.target.value)} />
+                        <Form.Control.Feedback type="invalid">
+                           Invalid Password
+                        </Form.Control.Feedback>
                      </Form.Group>
                   </Row>
-
 
                   <Row className="mb-3">
                      <Form.Group as={Col} md={6} className='mb-3' controlId="formGridUserName">
                         <Form.Label>Username</Form.Label>
-                        <Form.Control value={username} onChange={(e) => setUserName(e.target.value)} />
+                        <Form.Control isInvalid={!isvalidname} isValid={isvalidname} value={username} onChange={(e) => setUserName(e.target.value)} />
+                        <Form.Control.Feedback type="invalid">
+                           Invalid Username
+                        </Form.Control.Feedback>
                      </Form.Group>
 
                      <Form.Group as={Col} controlId="formGridRole">
