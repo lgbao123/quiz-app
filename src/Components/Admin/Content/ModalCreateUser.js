@@ -4,8 +4,8 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import axios from 'axios'
 import { toast } from 'react-toastify';
+import { postCreateNewUser } from '../../../service/apiservice';
 function ModalCreateUser(props) {
    const { show, setShow } = props;
    const [email, setEmail] = useState('')
@@ -36,7 +36,7 @@ function ModalCreateUser(props) {
       }
    }
    const ValidateEmail = (mail) => {
-      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+      if ((/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(mail)) {
          return (true)
       }
       return (false)
@@ -56,21 +56,17 @@ function ModalCreateUser(props) {
 
          // Call API
          // Gửi ảnh dùng formdata , dùng object sẽ không gửi được file
-         const data = new FormData()
-         data.append("email", email)
-         data.append("password", password)
-         data.append("username", username)
-         data.append("role", role)
-         data.append("userImage", userImage)
-         let res = await axios.post('http://localhost:8081/api/v1/participant', data)
-         if (res.data && res.data.EC === 0) {
-            toast.success('Add success')
+         let data = await postCreateNewUser(email, password, username, role, userImage)
+
+         if (data && data.EC === 0) {
+            toast.success(data.EM);
             handleClose();
          }
-         else {
-            toast.error(res.data.EM);
+         if (data && data.EC !== 0) {
+            toast.error(data.EM);
          }
-         console.log(res.data);
+
+         console.log('COMPO', data);
       }
       return;
    }
@@ -151,7 +147,7 @@ function ModalCreateUser(props) {
                   </Row>
                   <Row>
                      <div className='img-section '>
-                        {previewimageuser ? (<img src={previewimageuser} alt="search engine image" />) : (<span>Preview Image</span>)}
+                        {previewimageuser ? (<img src={previewimageuser} alt="preview " />) : (<span>Preview Image</span>)}
 
                      </div>
                   </Row>
