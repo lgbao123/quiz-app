@@ -21,7 +21,6 @@ import {
 import sidebarBg from '../../assets/bg2.jpg';
 import './SideBar.scss'
 const SideBar = ({
-    image,
     collapsed,
     toggled,
     handleToggleSidebar,
@@ -29,7 +28,7 @@ const SideBar = ({
 }) => {
     return (
         <ProSidebar
-            image={image ? sidebarBg : false}
+            image={sidebarBg ? sidebarBg : false}
             collapsed={collapsed}
             toggled={toggled}
             onToggle={handleToggleSidebar}

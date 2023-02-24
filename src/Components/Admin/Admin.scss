@@ -2,6 +2,8 @@
 
 .admin-container {
     display: flex;
+    // width: 100%;
+    // background-color: blue;
 
     .admin-sidebar {
         .pro-sidebar {
@@ -9,8 +11,16 @@
         }
     }
 
+    .admin-content {
+        // background-color: red;
+        flex: 1;
+    }
+
     .btn-toggle {
         display: none;
+        padding: 0.3rem;
+        width: 30px;
+        height: 30px;
     }
 
     @media (max-width: $breakpoint-md) {

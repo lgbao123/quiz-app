@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { toast } from 'react-toastify';
-import { postCreateNewUser } from '../../../service/apiservice';
+import { postCreateNewUser } from '../../../service/apiService';
 function ModalCreateUser(props) {
    const { show, setShow } = props;
    const [email, setEmail] = useState('')
