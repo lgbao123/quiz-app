@@ -2,7 +2,7 @@ import ModalCreateUser from "./ModalCreateUser"
 import './ManageUser.scss'
 import { useState, useEffect } from "react"
 import ListUser from "./ListUser";
-import { getAllUser } from '../../../service/apiService'
+import { getUserWithPaginate } from '../../../service/apiService'
 import ModalUpdateUser from "./ModalUpdateUser";
 import ModalViewUser from "./ModalViewUser";
 import ModalDeleteUser from "./ModalDeleteUser";
@@ -15,17 +15,21 @@ function ManageUser() {
    const [dataUpdate, setDataUpdate] = useState({});
    const [dataView, setDataView] = useState({});
    const [dataDelete, setDataDelete] = useState({});
+   const [page, setPage] = useState(1);
+   const [pagecount, setPageCount] = useState(0);
+   const LIMIT_USER = 5;
    useEffect(() => {
-      fetchAllUser();
+      fetchAllUser(page);
 
-   }, [])
-   const fetchAllUser = async () => {
-      let res = await getAllUser();
-
+   }, [page])
+   const fetchAllUser = async (page) => {
+      // let res = await getAllUser();
+      let res = await getUserWithPaginate(page, LIMIT_USER);
+      console.log(res);
       if (res && res.EC === 0) {
-         setUserList(res.DT)
+         setUserList(res.DT.users);;
+         setPageCount(res.DT.totalPages)
       }
-
    }
    const HandleClickModalUpdateUser = (user) => {
       // console.log(user);
@@ -51,12 +55,15 @@ function ManageUser() {
                HandleClickModalUpdateUser={HandleClickModalUpdateUser}
                HandleClickModalViewUser={HandleClickModalViewUser}
                HandleClickModalDeleteUser={HandleClickModalDeleteUser}
+               setPage={setPage}
+               pagecount={pagecount}
             />
          </div>
          <ModalCreateUser
             show={showmodal}
             setShow={setShowModal}
             fetchAllUser={fetchAllUser}
+            page={page}
          />
          <ModalUpdateUser
             show={showmodalUpdateUser}
@@ -64,6 +71,7 @@ function ManageUser() {
             dataUpdate={dataUpdate}
             fetchAllUser={fetchAllUser}
             setDataUpdate={setDataUpdate}
+            page={page}
          />
          <ModalViewUser
             show={showmodalViewUser}
@@ -77,6 +85,7 @@ function ManageUser() {
             dataDelete={dataDelete}
             setDataDelete={setDataDelete}
             fetchAllUser={fetchAllUser}
+            page={page}
          />
       </div>
    )

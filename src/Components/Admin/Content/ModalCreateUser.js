@@ -36,6 +36,7 @@ function ModalCreateUser(props) {
       }
    }
    const ValidateEmail = (mail) => {
+      //eslint-disable-next-line
       if ((/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(mail)) {
          return (true)
       }
@@ -43,6 +44,7 @@ function ModalCreateUser(props) {
    }
    const CheckPassword = (inputtxt) => {
       //[6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter]
+      //eslint-disable-next-line
       var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
       if (inputtxt.value.match(passw)) {
          return true;
@@ -61,7 +63,7 @@ function ModalCreateUser(props) {
          if (data && data.EC === 0) {
             toast.success(data.EM);
             handleClose();
-            await props.fetchAllUser();
+            await props.fetchAllUser(props.page);
          }
          if (data && data.EC !== 0) {
             toast.error(data.EM);
