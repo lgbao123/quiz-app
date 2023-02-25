@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { toast } from 'react-toastify';
-import { postCreateNewUser } from '../../../service/apiService';
+import { putUpdateUser } from '../../../service/apiService';
 import _ from 'lodash'
 function ModalUpdateUser(props) {
    const { show, setShow, dataUpdate } = props;
@@ -15,8 +15,6 @@ function ModalUpdateUser(props) {
    const [role, setRole] = useState("USER")
    const [userImage, setUserImage] = useState('')
    const [previewimageuser, setPreviewImageUser] = useState('')
-   const [isvalidemail, setIsValidEmail] = useState(true);
-   const [isvalidpass, setIsValidPass] = useState(true);
    const [isvalidname, setIsValidName] = useState(true);
 
    const handleClose = () => {
@@ -26,6 +24,7 @@ function ModalUpdateUser(props) {
       setUserName('');
       setRole('USER');
       setUserImage('');
+      props.setDataUpdate({});
 
    }
    const handleUploadImage = (e) => {
@@ -35,40 +34,25 @@ function ModalUpdateUser(props) {
          setUserImage(e.target.files[0])
       }
    }
-   const ValidateEmail = (mail) => {
-      if ((/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(mail)) {
-         return (true)
-      }
-      return (false)
-   }
-   const CheckPassword = (inputtxt) => {
-      //[6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter]
-      var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
-      if (inputtxt.value.match(passw)) {
-         return true;
-      } else {
-         return false;
-      }
-   }
-   const handleSubmitCreateUser = async () => {
+
+   const handleSubmitUpdateUser = async () => {
       //validate
-      // if (isvalidemail && isvalidname && isvalidpass) {
+      if (isvalidname) {
 
-      //    // Call API
-      //    // Gửi ảnh dùng formdata , dùng object sẽ không gửi được file
-      //    let data = await postCreateNewUser(email, password, username, role, userImage)
+         // Call API
+         // Gửi ảnh dùng formdata , dùng object sẽ không gửi được file
+         let data = await putUpdateUser(dataUpdate.id, username, role, userImage)
 
-      //    if (data && data.EC === 0) {
-      //       toast.success(data.EM);
-      //       handleClose();
-      //       await props.fetchAllUser();
-      //    }
-      //    if (data && data.EC !== 0) {
-      //       toast.error(data.EM);
-      //    }
+         if (data && data.EC === 0) {
+            toast.success(data.EM);
+            handleClose();
+            await props.fetchAllUser();
+         }
+         if (data && data.EC !== 0) {
+            toast.error(data.EM);
+         }
 
-      //    console.log('COMPO', data);
-      // }
+      }
       return;
    }
    // Clean URL previewimage
@@ -80,11 +64,11 @@ function ModalUpdateUser(props) {
 
    // Handle Validate
    useEffect(() => {
-      ValidateEmail(email) ? setIsValidEmail(true) : setIsValidEmail(false)
-      password ? setIsValidPass(true) : setIsValidPass(false)
       username ? setIsValidName(true) : setIsValidName(false);
-   }, [password, email, username])
+   }, [username])
+   // handle update data
    useEffect(() => {
+      // check emty dataUpdate ( object) trước khi set  nếu ko lần đầu sẽ set undefined cho các state 
       if (!_.isEmpty(dataUpdate)) {
 
          setEmail(dataUpdate.email);
@@ -171,7 +155,7 @@ function ModalUpdateUser(props) {
                <Button variant="secondary" onClick={handleClose}>
                   Close
                </Button>
-               <Button variant="primary" onClick={handleSubmitCreateUser}>Acept</Button>
+               <Button variant="primary" onClick={handleSubmitUpdateUser}>Acept</Button>
             </Modal.Footer>
          </Modal>
       </>
