@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 function ListUser(props) {
    const { userList } = props
 
@@ -24,12 +24,18 @@ function ListUser(props) {
                         <td>{element.email}</td>
                         <td>{element.role}</td>
                         <td className='d-flex mb-1' >
-                           <button type="button" className="flex-fill me-1 btn btn-primary ">View</button>
+                           <button type="button"
+                              className="flex-fill me-1 btn btn-primary "
+                              onClick={() => props.HandleClickModalViewUser(element)}
+                           >View</button>
                            <button type="button"
                               className="flex-fill me-1 btn btn-info "
                               onClick={() => props.HandleClickModalUpdateUser(element)}
                            >Update</button>
-                           <button type="button" className="flex-fill me-1 btn btn-danger">Delete</button>
+                           <button type="button"
+                              className="flex-fill me-1 btn btn-danger"
+                              onClick={() => props.HandleClickModalDeleteUser(element)}
+                           >Delete</button>
                         </td>
                      </tr>)
                })}
