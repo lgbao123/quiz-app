@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom"
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import { postLoign } from '../../service/apiService'
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux'
+import { doLogin } from '../../redux/action/userAction'
 function Login() {
    const [email, setEmail] = useState('')
    const [password, setPassword] = useState('');
@@ -11,6 +13,7 @@ function Login() {
    const [isShowPass, setIsShowPass] = useState(false);
    const [isFirst, setIsFirst] = useState(true);
    const navigate = useNavigate();
+   const dispatch = useDispatch();
    const validateEmail = (mail) => {
       //eslint-disable-next-line
       if ((/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(mail)) {
@@ -25,6 +28,7 @@ function Login() {
          //call api
          let res = await postLoign(email, password);
          if (res && res.EC === 0) {
+            dispatch(doLogin(res));
             toast.success(res.EM);
             navigate("/");
          }

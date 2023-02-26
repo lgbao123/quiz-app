@@ -35,32 +35,12 @@
 
    }
 
-   @media screen and (max-width:768px) {
-      .btn {
-         margin-bottom: 0.7rem;
-         border: none;
-         margin-right: 0;
+   @media screen and (min-width:1920px) {
+      .drop-down-section {
+
+         margin-right: 80px !important;
       }
 
-
-      .menu-item {
-         align-items: center;
-
-
-      }
-
-      .navbar {
-         // background-color: white !important;
-      }
-
-      // .navbar-list {
-      //    background-color: yellow !important;
-      //    position: absolute;
-      //    left: 0;
-      //    right: 0;
-      //    align-items: center;
-      //    top: 100%;
-      // }
 
    }
 
