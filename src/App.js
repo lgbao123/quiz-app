@@ -2,10 +2,8 @@
 import './App.scss';
 import Header from './Components/Header/Header';
 
-import { Outlet, Routes, Route } from 'react-router-dom'
-import HomePage from './Components/HomePage/HomePage';
-import User from './Components/User/User';
-import Admin from './Components/Admin/Admin';
+import { Outlet } from 'react-router-dom'
+
 
 function App() {
 	return (

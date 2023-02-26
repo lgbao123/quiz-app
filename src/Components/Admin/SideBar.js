@@ -13,10 +13,8 @@ import {
     FaAngleDoubleLeft,
     FaAngleDoubleRight,
     FaTachometerAlt,
-    FaGem,
-    FaList,
-    FaRegLaughWink,
-    FaHeart
+    FaList
+
 } from 'react-icons/fa';
 import sidebarBg from '../../assets/bg2.jpg';
 import './SideBar.scss'

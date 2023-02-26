@@ -27,6 +27,7 @@ function ModalCreateUser(props) {
       setUserName('');
       setRole('USER');
       setUserImage('');
+      setIsFirst(true);
 
    }
    const handleUploadImage = (e) => {
@@ -71,7 +72,6 @@ function ModalCreateUser(props) {
             toast.error(data.EM);
          }
 
-         console.log('COMPO', data);
       }
       return;
    }
