@@ -1,0 +1,54 @@
+.login-container {
+
+   .login,
+   .image {
+      min-height: 100%;
+   }
+
+   // .bg-image {
+   //    background-image: url('https://therichpost.com/wp-content/uploads/2021/02/login-split.jpg');
+   //    background-size: cover;
+   //    background-position: center center;
+   // }
+
+   .btn-back {
+      &:hover {
+         font-weight: 500;
+         cursor: pointer;
+      }
+
+      width: fit-content;
+
+   }
+
+   .password {
+      position: relative;
+
+      .icon-eye {
+         font-size: 22px;
+         position: absolute;
+         top: 0;
+         right: 0;
+         padding-right: 1rem;
+         cursor: pointer;
+      }
+   }
+
+   .password-register {
+      position: relative;
+
+      .icon-eye {
+         font-size: 22px;
+         position: absolute;
+         top: 30px;
+         right: 0;
+         padding-right: 1rem;
+         cursor: pointer;
+      }
+   }
+
+   .form-label {
+      font-weight: bold;
+      margin-bottom: 4px;
+   }
+}

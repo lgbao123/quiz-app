@@ -2,30 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 // import './index.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
+import Layout from './Layout';
 
-import App from './App';
-import User from './Components/User/User';
-import Admin from './Components/Admin/Admin';
-import HomePage from './Components/HomePage/HomePage';
-import DashBoard from './Components/Admin/Content/DashBoard';
-import ManageUser from './Components/Admin/Content/ManageUser';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<React.StrictMode>
 		<BrowserRouter>
-			<Routes>
-				<Route path='/' element={<App />} >
-					<Route index element={<HomePage />} />
-					<Route path='/user' element={<User />} />
-				</Route>
-				<Route path='/admin' element={<Admin />} >
-					<Route index element={<DashBoard />} />
-					<Route path='manage-user' element={<ManageUser />} />
-				</Route>
-			</Routes>
-
+			<Layout />
 		</BrowserRouter>
 	</React.StrictMode>
 );

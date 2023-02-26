@@ -18,6 +18,7 @@ function ModalCreateUser(props) {
    const [isvalidemail, setIsValidEmail] = useState(true);
    const [isvalidpass, setIsValidPass] = useState(true);
    const [isvalidname, setIsValidName] = useState(true);
+   const [isFirst, setIsFirst] = useState(true);
 
    const handleClose = () => {
       setShow(false);
@@ -35,24 +36,25 @@ function ModalCreateUser(props) {
          setUserImage(e.target.files[0])
       }
    }
-   const ValidateEmail = (mail) => {
+   const validateEmail = (mail) => {
       //eslint-disable-next-line
       if ((/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(mail)) {
          return (true)
       }
       return (false)
    }
-   const CheckPassword = (inputtxt) => {
+   const checkPassword = (inputtxt) => {
       //[6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter]
       //eslint-disable-next-line
       var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
-      if (inputtxt.value.match(passw)) {
+      if (inputtxt.match(passw)) {
          return true;
       } else {
          return false;
       }
    }
    const handleSubmitCreateUser = async () => {
+      setIsFirst(false);
       //validate
       if (isvalidemail && isvalidname && isvalidpass) {
 
@@ -63,7 +65,7 @@ function ModalCreateUser(props) {
          if (data && data.EC === 0) {
             toast.success(data.EM);
             handleClose();
-            await props.fetchAllUser(props.page);
+            props.page !== 1 ? props.setPage(1) : await props.fetchAllUser(props.page);
          }
          if (data && data.EC !== 0) {
             toast.error(data.EM);
@@ -82,9 +84,9 @@ function ModalCreateUser(props) {
 
    // Handle Validate
    useEffect(() => {
-      ValidateEmail(email) ? setIsValidEmail(true) : setIsValidEmail(false)
-      password ? setIsValidPass(true) : setIsValidPass(false)
-      username ? setIsValidName(true) : setIsValidName(false);
+      validateEmail(email) ? setIsValidEmail(true) : setIsValidEmail(false)
+      checkPassword(password) ? setIsValidPass(true) : setIsValidPass(false)
+      username.length >= 3 ? setIsValidName(true) : setIsValidName(false);
    }, [password, email, username])
    return (
       <>
@@ -106,9 +108,10 @@ function ModalCreateUser(props) {
             <Modal.Body>
                <Form >
                   <Row className="mb-3">
+
                      <Form.Group as={Col} md={6} controlId="formGridEmail" className='mb-3'>
                         <Form.Label>Email</Form.Label>
-                        <Form.Control isInvalid={!isvalidemail} isValid={isvalidemail} type="email" placeholder="Enter email" value={email}
+                        <Form.Control isInvalid={isFirst ? isvalidemail : !isvalidemail} type="email" placeholder="Enter email" value={email}
                            onChange={(e) => setEmail(e.target.value)} />
                         <Form.Control.Feedback type="invalid">
                            Invalid Email
@@ -116,10 +119,10 @@ function ModalCreateUser(props) {
                      </Form.Group>
                      <Form.Group as={Col} controlId="formGridPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control isInvalid={!isvalidpass} isValid={isvalidpass} type="password" placeholder="Password" value={password}
+                        <Form.Control isInvalid={isFirst ? isvalidpass : !isvalidpass} type="password" placeholder="Password" value={password}
                            onChange={(e) => setPassWord(e.target.value)} />
                         <Form.Control.Feedback type="invalid">
-                           Invalid Password
+                           6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter
                         </Form.Control.Feedback>
                      </Form.Group>
                   </Row>
@@ -127,9 +130,9 @@ function ModalCreateUser(props) {
                   <Row className="mb-3">
                      <Form.Group as={Col} md={6} className='mb-3' controlId="formGridUserName">
                         <Form.Label>Username</Form.Label>
-                        <Form.Control isInvalid={!isvalidname} isValid={isvalidname} value={username} onChange={(e) => setUserName(e.target.value)} />
+                        <Form.Control isInvalid={isFirst ? isvalidname : !isvalidname} value={username} onChange={(e) => setUserName(e.target.value)} />
                         <Form.Control.Feedback type="invalid">
-                           Invalid Username
+                           Username must be more than 3 characters
                         </Form.Control.Feedback>
                      </Form.Group>
 

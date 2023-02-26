@@ -43,22 +43,29 @@ const SideBar = ({
                             onClick={handleCollapsedChange}
                         ></MenuItem>
                     ) : (
-                        <MenuItem
-                            suffix={<FaAngleDoubleLeft />}
-                            onClick={handleCollapsedChange}
-                        >
+                        <div className='d-flex justify-content-between'>
                             <div
                                 style={{
-                                    padding: '9px',
+                                    padding: '9px 9px 9px 16px',
                                     textTransform: 'uppercase',
                                     fontWeight: 'bold',
                                     fontSize: 15,
                                     letterSpacing: '1px'
                                 }}
                             >
-                                Pro Sidebar
+                                Sidebar
+                                <NavLink to="/" />
                             </div>
-                        </MenuItem>
+                            <MenuItem
+                                suffix={<FaAngleDoubleLeft />}
+                                onClick={handleCollapsedChange}
+                            >
+
+                            </MenuItem>
+
+
+                        </div>
+
                     )}
                 </Menu>
             </SidebarHeader>

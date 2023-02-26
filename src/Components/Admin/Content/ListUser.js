@@ -49,7 +49,7 @@ function ListUser(props) {
                })}
                {userList && userList.length === 0 && (
                   <tr>
-                     <td colspan="5">Not Found Data </td>
+                     <td colSpan="5">Not Found Data </td>
                      {/* <td ></td> */}
                   </tr>
                )
@@ -80,6 +80,7 @@ function ListUser(props) {
                containerClassName="pagination"
                activeClassName="active"
                renderOnZeroPageCount={null}
+               forcePage={props.page - 1}
             />
          </div>
 

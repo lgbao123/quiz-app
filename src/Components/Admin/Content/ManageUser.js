@@ -25,7 +25,6 @@ function ManageUser() {
    const fetchAllUser = async (page) => {
       // let res = await getAllUser();
       let res = await getUserWithPaginate(page, LIMIT_USER);
-      console.log(res);
       if (res && res.EC === 0) {
          setUserList(res.DT.users);;
          setPageCount(res.DT.totalPages)
@@ -55,6 +54,7 @@ function ManageUser() {
                HandleClickModalUpdateUser={HandleClickModalUpdateUser}
                HandleClickModalViewUser={HandleClickModalViewUser}
                HandleClickModalDeleteUser={HandleClickModalDeleteUser}
+               page={page}
                setPage={setPage}
                pagecount={pagecount}
             />
@@ -64,6 +64,7 @@ function ManageUser() {
             setShow={setShowModal}
             fetchAllUser={fetchAllUser}
             page={page}
+            setPage={setPage}
          />
          <ModalUpdateUser
             show={showmodalUpdateUser}
