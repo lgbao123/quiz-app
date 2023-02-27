@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import "./Login.scss"
 import { useNavigate } from "react-router-dom"
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
+import { FaSpinner } from "react-icons/fa"
 import { postLoign } from '../../service/apiService'
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux'
@@ -12,6 +13,7 @@ function Login() {
    const [isValidEmail, setIsValidEmail] = useState(false);
    const [isShowPass, setIsShowPass] = useState(false);
    const [isFirst, setIsFirst] = useState(true);
+   const [isLoading, setIsLoading] = useState(false);
    const navigate = useNavigate();
    const dispatch = useDispatch();
    const validateEmail = (mail) => {
@@ -26,13 +28,16 @@ function Login() {
       setIsFirst(false);
       if (isValidEmail) {
          //call api
+         setIsLoading(true);
          let res = await postLoign(email, password);
          if (res && res.EC === 0) {
             dispatch(doLogin(res));
             toast.success(res.EM);
+            setIsLoading(false);
             navigate("/");
          }
          if (res && res.EC !== 0) {
+            setIsLoading(false);
             toast.error(res.EM);
          }
       }
@@ -72,17 +77,21 @@ function Login() {
                                  </div>
                               </div>
                               <div className="mb-3 form-group password">
-                                 <input id="inputPassword" type={isShowPass ? 'text' : 'password'} placeholder="Password"
+                                 <input id="inputPassword" type={'password'} placeholder="Password"
                                     className="form-control rounded-pill  shadow-sm px-4 "
                                     value={password} onChange={(e) => setPassword(e.target.value)}
                                  />
-                                 {isShowPass ? (
+                                 {/* <input id="inputPassword" type={isShowPass ? 'text' : 'password'} placeholder="Password"
+                                    className="form-control rounded-pill  shadow-sm px-4 "
+                                    value={password} onChange={(e) => setPassword(e.target.value)}
+                                 /> */}
+                                 {/* {isShowPass ? (
                                     <span className='icon-eye' onClick={() => setIsShowPass(false)}>
                                        <AiOutlineEyeInvisible />
                                     </span>) : (
                                     <span className='icon-eye' onClick={() => setIsShowPass(true)}>
                                        <AiOutlineEye />
-                                    </span>)}
+                                    </span>)} */}
 
 
                               </div>
@@ -92,10 +101,12 @@ function Login() {
                               </div> */}
                               <p className='btn-back text-muted' >Forgot password? </p>
                               <div className="d-grid gap-2 my-5">
-                                 <button type="button"
-                                    className="btn btn-dark btn-block text-uppercase mb-2 rounded-pill shadow-sm"
+                                 <button disabled={isLoading} type="button"
+                                    className="btn btn-login btn-dark btn-block text-uppercase mb-2 rounded-pill shadow-sm"
                                     onClick={handleSubmitLogin}
-                                 >Sign in</button>
+                                 >  {isLoading && <FaSpinner className='spinner' />}
+
+                                    <span >Sign in </span></button>
                               </div>
                               <p className='btn-back' onClick={() => navigate('/')}>&#60;&#60; Back to Homepage </p>
                            </form>

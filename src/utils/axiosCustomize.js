@@ -1,11 +1,14 @@
 
 import axios from "axios";
+import nProgress from "nprogress";
+nProgress.configure({ showSpinner: false, speed: 1000 });
 const instance = axios.create({
    baseURL: 'http://localhost:8081/'
 });
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
    // Do something before request is sent
+   nProgress.start();
    return config;
 }, function (error) {
    // Do something with request error
@@ -17,8 +20,10 @@ instance.interceptors.response.use(function (response) {
    // Any status code that lie within the range of 2xx cause this function to trigger
    // Do something with response data
    // console.log(response);
+   nProgress.done();
    return response && response.data ? response.data : response;
 }, function (error) {
+   nProgress.done();
    // Any status codes that falls outside the range of 2xx cause this function to trigger
    // Do something with response error
    return error && error.response && error.response.data ? error.response.data : Promise.reject(error);

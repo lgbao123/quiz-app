@@ -51,4 +51,31 @@
       font-weight: bold;
       margin-bottom: 4px;
    }
+
+   .btn-login {
+      &:disabled {
+         cursor: no-drop;
+         background-color: #dddd;
+         color: #666;
+      }
+   }
+
+   .spinner {
+      animation: spin-animation 1s infinite;
+      animation-timing-function: linear;
+      display: inline-block;
+      // font-size: 40px;
+      margin-right: 4px;
+
+   }
+
+   @keyframes spin-animation {
+      0% {
+         transform: rotate(0deg);
+      }
+
+      100% {
+         transform: rotate(360deg);
+      }
+   }
 }

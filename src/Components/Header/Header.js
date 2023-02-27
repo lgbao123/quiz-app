@@ -21,7 +21,7 @@ function Header() {
 			<Navbar bg="light" expand="md" className='fixed-top bg-lg-transparent p-4'>
 				<Container >
 
-					<Link to='/' className='navbar-brand'>React-Bootstrap</Link>
+					<Link to='/' className='navbar-brand text-uppercase'>quizzes</Link>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse id="basic-navbar-nav" className='navbar-list'>
 						<Nav className="me-auto menu-item">
