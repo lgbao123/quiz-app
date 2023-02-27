@@ -34,3 +34,17 @@
       }
    }
 }
+
+.password-create-user {
+   position: relative;
+
+   .icon-eye {
+      font-size: 22px;
+      position: absolute;
+      top: 35px;
+      right: 0;
+      padding-right: 1.2rem;
+      cursor: pointer;
+      // background-color: red;
+   }
+}

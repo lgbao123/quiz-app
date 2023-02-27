@@ -55,3 +55,7 @@ video {
 input {
 	font-size: 100%;
 }
+
+::-ms-reveal {
+	display: none;
+}

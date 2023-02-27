@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { toast } from 'react-toastify';
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import { postCreateNewUser } from '../../../service/apiService';
 function ModalCreateUser(props) {
    const { show, setShow } = props;
@@ -15,9 +16,10 @@ function ModalCreateUser(props) {
    const [userImage, setUserImage] = useState('')
    const [previewimageuser, setPreviewImageUser] = useState('')
 
-   const [isvalidemail, setIsValidEmail] = useState(true);
-   const [isvalidpass, setIsValidPass] = useState(true);
-   const [isvalidname, setIsValidName] = useState(true);
+   const [isvalidemail, setIsValidEmail] = useState(false);
+   const [isvalidpass, setIsValidPass] = useState(false);
+   const [isShowPass, setIsShowPass] = useState(false);
+   const [isvalidname, setIsValidName] = useState(false);
    const [isFirst, setIsFirst] = useState(true);
 
    const handleClose = () => {
@@ -111,16 +113,23 @@ function ModalCreateUser(props) {
 
                      <Form.Group as={Col} md={6} controlId="formGridEmail" className='mb-3'>
                         <Form.Label>Email</Form.Label>
-                        <Form.Control isInvalid={isFirst ? isvalidemail : !isvalidemail} type="email" placeholder="Enter email" value={email}
+                        <Form.Control isInvalid={isFirst ? false : !isvalidemail} type="email" placeholder="Enter email" value={email}
                            onChange={(e) => setEmail(e.target.value)} />
                         <Form.Control.Feedback type="invalid">
                            Invalid Email
                         </Form.Control.Feedback>
                      </Form.Group>
-                     <Form.Group as={Col} controlId="formGridPassword">
+                     <Form.Group className='password-create-user' as={Col} controlId="formGridPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control isInvalid={isFirst ? isvalidpass : !isvalidpass} type="password" placeholder="Password" value={password}
+                        <Form.Control isInvalid={isFirst ? false : !isvalidpass} type={isShowPass ? "text" : "password"} placeholder="Password" value={password}
                            onChange={(e) => setPassWord(e.target.value)} />
+                        {isShowPass ? (
+                           <span className='icon-eye' onClick={() => setIsShowPass(false)}>
+                              <AiOutlineEyeInvisible />
+                           </span>) : (
+                           <span className='icon-eye' onClick={() => setIsShowPass(true)}>
+                              <AiOutlineEye />
+                           </span>)}
                         <Form.Control.Feedback type="invalid">
                            6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter
                         </Form.Control.Feedback>
@@ -130,7 +139,7 @@ function ModalCreateUser(props) {
                   <Row className="mb-3">
                      <Form.Group as={Col} md={6} className='mb-3' controlId="formGridUserName">
                         <Form.Label>Username</Form.Label>
-                        <Form.Control isInvalid={isFirst ? isvalidname : !isvalidname} value={username} onChange={(e) => setUserName(e.target.value)} />
+                        <Form.Control isInvalid={isFirst ? false : !isvalidname} value={username} onChange={(e) => setUserName(e.target.value)} />
                         <Form.Control.Feedback type="invalid">
                            Username must be more than 3 characters
                         </Form.Control.Feedback>

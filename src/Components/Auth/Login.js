@@ -77,21 +77,18 @@ function Login() {
                                  </div>
                               </div>
                               <div className="mb-3 form-group password">
-                                 <input id="inputPassword" type={'password'} placeholder="Password"
+
+                                 <input id="inputPassword" type={isShowPass ? 'text' : 'password'} placeholder="Password"
                                     className="form-control rounded-pill  shadow-sm px-4 "
                                     value={password} onChange={(e) => setPassword(e.target.value)}
                                  />
-                                 {/* <input id="inputPassword" type={isShowPass ? 'text' : 'password'} placeholder="Password"
-                                    className="form-control rounded-pill  shadow-sm px-4 "
-                                    value={password} onChange={(e) => setPassword(e.target.value)}
-                                 /> */}
-                                 {/* {isShowPass ? (
+                                 {isShowPass ? (
                                     <span className='icon-eye' onClick={() => setIsShowPass(false)}>
                                        <AiOutlineEyeInvisible />
                                     </span>) : (
                                     <span className='icon-eye' onClick={() => setIsShowPass(true)}>
                                        <AiOutlineEye />
-                                    </span>)} */}
+                                    </span>)}
 
 
                               </div>
