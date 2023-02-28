@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { getQuizzByUser } from '../../service/apiService';
 import './QuizzList.scss'
 function QuizzList() {
+   const navigate = useNavigate();
    const [quizzList, setQuizzList] = useState([]);
    useEffect(() => {
       fetchGetQuizz();
@@ -22,79 +24,21 @@ function QuizzList() {
                return (
                   <div key={`quizz-${item.id}`} className="col-xxl-4 col-md-6 mt-5 ">
                      <div className="card">
-                        <div className='img-div'><img className="card-img-top" src={`data:image/jpeg;base64,${item.image}`} alt="Card image cap" /></div>
+                        <div className='img-div'><img className="card-img-top" src={`data:image/jpeg;base64,${item.image}`} alt="Card " /></div>
                         <div className="card-body">
-                           <h5 className="card-title">Quizz {index}</h5>
+                           <h5 className="card-title">Quizz {index + 1}</h5>
                            <p className="card-text">{item.description}</p>
                         </div>
                         <div className="card-footer d-flex justify-content-between align-items-center">
-                           <button className="btn btn-primary">Start now</button>
+                           <button onClick={() => navigate(`/quizz/${item.id}`, { 'state': { 'desc': item.description } })} className="btn btn-primary">Start now</button>
                            <small className="text-muted">Last updated 3 mins ago</small>
                         </div>
                      </div>
                   </div>
                )
             })}
-            {/* <div class="col-xxl-4 col-md-6 mt-5 ">
-               <div class="card">
-                  <div className='img-div'><img class="card-img-top" src="https://imagekit.io/blog/content/images/2020/06/cdn-blog-banner.jpg" alt="Card image cap" /></div>
-                  <div class="card-body">
-                     <h5 class="card-title">Special title treatment</h5>
-                     <p class="card-text">With supporting text below as a natural lead-in to additional content.
-                        With supporting text below as a natural lead-in to additional
-                        With supporting text below as a natural lead-in to additional
-                     </p>
+            {quizzList && quizzList.length === 0 && <div className='mt-4'>You don't have any quizz now ...</div>}
 
-                  </div>
-                  <div class="card-footer d-flex justify-content-between align-items-center">
-                     <button class="btn btn-primary">Start now</button>
-                     <small class="text-muted">Last updated 3 mins ago</small>
-                  </div>
-               </div>
-            </div>
-            <div class="col-xxl-4 col-md-6 mt-5 ">
-               <div class="card">
-                  <div className='img-div'><img class="card-img-top" src="https://imagekit.io/blog/content/images/2020/06/cdn-blog-banner.jpg" alt="Card image cap" /></div>
-                  <div class="card-body">
-                     <h5 class="card-title">Special title treatment</h5>
-                     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                  </div>
-                  <div class="card-footer d-flex justify-content-between align-items-center">
-                     <button class="btn btn-dark">Start now</button>
-                     <small class="text-muted">Last updated 3 mins ago</small>
-                  </div>
-               </div>
-            </div>
-            <div class="col-xxl-4 col-md-6 mt-5 ">
-               <div class="card">
-                  <div className='img-div'><img class="card-img-top" src="https://imagekit.io/blog/content/images/2020/06/cdn-blog-banner.jpg" alt="Card image cap" /></div>
-
-                  <div class="card-body">
-                     <h5 class="card-title">Special title treatment</h5>
-                     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                  </div>
-                  <div class="card-footer d-flex justify-content-between align-items-center">
-                     <button class="btn btn-primary">Start now</button>
-                     <small class="text-muted">Last updated 3 mins ago</small>
-                  </div>
-               </div>
-            </div>
-            <div class="col-xxl-4 col-md-6 mt-5 ">
-               <div class="card">
-                  <div className='img-div'><img class="card-img-top" src="https://imagekit.io/blog/content/images/2020/06/cdn-blog-banner.jpg" alt="Card image cap" /></div>
-                  <div class="card-body">
-                     <h5 class="card-title">Special title treatment</h5>
-                     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                  </div>
-                  <div class="card-footer d-flex justify-content-between align-items-center">
-                     <button class="btn btn-primary">Start now</button>
-                     <small class="text-muted">Last updated 3 mins ago</small>
-                  </div>
-               </div>
-            </div> */}
          </div>
 
       </div>

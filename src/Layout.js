@@ -10,6 +10,12 @@ import Register from './Components/Auth/Register';
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import QuizzList from './Components/User/QuizzList';
+import QuizzDetail from './Components/User/QuizzDetail';
+const NotFound = () => {
+   return (
+      <div className='container mt-3 alert alert-danger'>404 NOT FOUND
+      </div>)
+}
 function Layout() {
    return (
       <>
@@ -18,13 +24,14 @@ function Layout() {
                <Route index element={<HomePage />} />
                <Route path='/user' element={<QuizzList />} />
             </Route>
+            <Route path='/quizz/:id' element={<QuizzDetail />} />
             <Route path='/admin' element={<Admin />} >
                <Route index element={<DashBoard />} />
                <Route path='manage-user' element={<ManageUser />} />
             </Route>
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
-
+            <Route path="*" element={<NotFound />} />
          </Routes>
          <ToastContainer
             position="top-right"

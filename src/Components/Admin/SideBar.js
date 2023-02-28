@@ -51,7 +51,7 @@ const SideBar = ({
                                     letterSpacing: '1px'
                                 }}
                             >
-                                Sidebar
+                                QUIZZES
                                 <NavLink to="/" />
                             </div>
                             <MenuItem
