@@ -11,6 +11,7 @@ import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import QuizzList from './Components/User/QuizzList';
 import QuizzDetail from './Components/User/QuizzDetail';
+import ManageQuiz from './Components/Admin/Content/Quiz/ManageQuiz';
 const NotFound = () => {
    return (
       <div className='container mt-3 alert alert-danger'>404 NOT FOUND
@@ -28,6 +29,7 @@ function Layout() {
             <Route path='/admin' element={<Admin />} >
                <Route index element={<DashBoard />} />
                <Route path='manage-user' element={<ManageUser />} />
+               <Route path='manage-quizzes' element={<ManageQuiz />} />
             </Route>
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />

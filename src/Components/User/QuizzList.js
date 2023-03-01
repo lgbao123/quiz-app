@@ -26,7 +26,7 @@ function QuizzList() {
                      <div className="card">
                         <div className='img-div'><img className="card-img-top" src={`data:image/jpeg;base64,${item.image}`} alt="Card " /></div>
                         <div className="card-body">
-                           <h5 className="card-title">Quizz {index + 1}</h5>
+                           <h5 className="card-title">Quiz {index + 1}</h5>
                            <p className="card-text">{item.description}</p>
                         </div>
                         <div className="card-footer d-flex justify-content-between align-items-center">

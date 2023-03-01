@@ -46,8 +46,8 @@ function ManageUser() {
       setShowModalDeleteUser(true);
    }
    return (
-      <div className="manageUser-container">
-         <h2 className="title mb-3 mt-3">ManageUser</h2>
+      <div className="manageUser-container mt-5 container">
+         <h2 className="title mb-5">Manage User</h2>
          <button className="btn-newuser btn btn-dark mb-3" onClick={() => setShowModal(true)}>Add New User</button>
          <div className="list-user">
             <ListUser userList={userList}

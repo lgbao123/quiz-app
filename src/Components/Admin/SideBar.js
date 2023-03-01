@@ -81,7 +81,9 @@ const SideBar = ({
                             Quản lý người dùng
                             <NavLink to="/admin/manage-user" />
                         </MenuItem>
-                        <MenuItem>Quản lý câu hỏi </MenuItem>
+                        <MenuItem>Quản lý câu hỏi
+                            <NavLink to="/admin/manage-quizzes" />
+                        </MenuItem>
                         <MenuItem>Quản lý bài thi </MenuItem>
                     </SubMenu>
                 </Menu>

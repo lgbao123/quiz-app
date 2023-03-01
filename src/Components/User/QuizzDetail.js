@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-import { getQuestionById } from '../../service/apiService';
+import { getQuestionById, postSubmitAnswers } from '../../service/apiService';
 import _ from 'lodash';
 import './QuizzDetail.scss'
 import Question from './Question';
+import ModalQuizzResult from './ModalQuizzResult';
 function QuizzDetail() {
+   const [showResultModal, setShowResultModal] = useState(false);
+   const [dataResultModal, setDataResultModal] = useState({});
    const params = useParams();
    const QuizzId = params.id;
    const location = useLocation();
@@ -22,6 +25,44 @@ function QuizzDetail() {
       if (index < questionList.length - 1) {
          setIndex(index + 1);
       }
+   }
+   const handleFinish = async () => {
+      //    {
+      //       "quizId": 1,
+      //       "answers": [
+      //           { 
+      //               "questionId": 1,
+      //               "userAnswerId": [3]
+      //           },
+      //           { 
+      //               "questionId": 2,
+      //               "userAnswerId": [6]
+      //           }
+      //       ]
+      //   }
+      const answers = questionList && questionList.length > 0 && questionList.map((question) => {
+         let userAnswerId = [];
+         question.answers.forEach((answer) => {
+            if (answer.isSelected) {
+               userAnswerId.push(answer.id)
+            }
+         })
+         return {
+            "questionId": +question.idQuestion,
+            "userAnswerId": userAnswerId
+         }
+      })
+      let payload = {
+         "quizId": +QuizzId,
+         "answers": answers || []
+      }
+      let res = await postSubmitAnswers(payload);
+      if (res && res.EC === 0) {
+         setDataResultModal(res.DT)
+         console.log('check', res);
+         setShowResultModal(true);
+      }
+      // console.log(payload);
    }
    const handleCheckBox = (qId, aId) => {
       console.log('aid', aId);
@@ -70,7 +111,7 @@ function QuizzDetail() {
             <div className="col-md-8 col-sm-12 mt-5 px-0">
                <div className="card">
                   <div className="card-body">
-                     <h4 className="quizz-title">Quizz {QuizzId} :{location.state.desc}</h4>
+                     <h4 className="quizz-title">Quiz {QuizzId} :{location.state.desc}</h4>
                      <hr></hr>
 
                      <Question
@@ -81,6 +122,7 @@ function QuizzDetail() {
                   <div className="card-footer d-flex justify-content-center gap-3 align-items-center">
                      <button onClick={handlePrev} className="btn btn-secondary">Prev</button>
                      <button onClick={handleNext} className="btn btn-primary">Next</button>
+                     <button onClick={handleFinish} className="btn btn-warning">Finish</button>
                   </div>
                </div>
             </div>
@@ -100,6 +142,11 @@ function QuizzDetail() {
             {/* {quizzList && quizzList.length === 0 && <div className='mt-4'>You don't have any quizz now ...</div>} */}
 
          </div>
+         <ModalQuizzResult
+            show={showResultModal}
+            setShow={setShowResultModal}
+            dataResultModal={dataResultModal}
+         />
 
       </div>
    )
