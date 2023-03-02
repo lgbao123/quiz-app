@@ -1,0 +1,57 @@
+.questions-container {
+   .question-section {
+      .input-file {
+         label {
+            cursor: pointer;
+            font-size: 40px;
+         }
+
+
+      }
+
+      .add-icon {
+         font-size: 25px;
+         cursor: pointer;
+
+      }
+
+      .minus-icon {
+         font-size: 25px;
+         cursor: pointer;
+      }
+
+      .span-div {
+         // background-color: red;
+         width: 200px;
+         overflow: hidden;
+         text-overflow: ellipsis;
+
+         &:hover {
+            cursor: pointer;
+            font-weight: 500;
+         }
+      }
+   }
+
+   .answer-section {
+
+
+      .icon-check {
+         font-size: 22px;
+         cursor: pointer;
+
+      }
+
+      .add-icon,
+      .minus-icon {
+         font-size: 25px;
+         cursor: pointer;
+      }
+   }
+
+   .lb-img {
+      object-fit: contain !important;
+      max-width: fit-content;
+
+   }
+}

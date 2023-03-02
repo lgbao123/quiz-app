@@ -6,14 +6,15 @@ import Row from 'react-bootstrap/Row';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Select from 'react-select';
 import _ from 'lodash'
-import { postUpdateQuiz } from '../../../../service/apiService';
+import { putUpdateQuiz } from '../../../../service/apiService';
 import { toast } from 'react-toastify';
-const options = [
-   { value: 'EASY', label: 'Easy' },
-   { value: 'MEDIUM', label: 'Medium' },
-   { value: 'HARD', label: 'Hard' }
-]
+
 function ModalUpdateQuiz(props) {
+   const options = [
+      { value: 'EASY', label: 'Easy' },
+      { value: 'MEDIUM', label: 'Medium' },
+      { value: 'HARD', label: 'Hard' }
+   ]
    const { show, setShow, dataUpdate } = props;
    const inputImgRef = useRef(null);
    const [name, setName] = useState('');
@@ -44,7 +45,7 @@ function ModalUpdateQuiz(props) {
    }
    const handleSubmitUpdate = async () => {
 
-      let res = await postUpdateQuiz(dataUpdate.id, desc, name, type?.value, image);
+      let res = await putUpdateQuiz(dataUpdate.id, desc, name, type?.value, image);
       if (res && res.EC === 0) {
          toast.success(res.EM);
          await props.fetchListQuiz();

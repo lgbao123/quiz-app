@@ -84,7 +84,10 @@ const SideBar = ({
                         <MenuItem>Quản lý câu hỏi
                             <NavLink to="/admin/manage-quizzes" />
                         </MenuItem>
-                        <MenuItem>Quản lý bài thi </MenuItem>
+                        <MenuItem>Quản lý bài thi
+                            <NavLink to="/admin/manage-question" />
+                        </MenuItem>
+
                     </SubMenu>
                 </Menu>
             </SidebarContent>

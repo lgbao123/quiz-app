@@ -11,12 +11,13 @@ import { toast } from 'react-toastify';
 import ListQuiz from './ListQuiz';
 import ModalUpdateQuiz from './ModalUpdateQuiz';
 import ModalDeleteQuiz from './ModalDeleteQuiz';
-const options = [
-   { value: 'EASY', label: 'Easy' },
-   { value: 'MEDIUM', label: 'Medium' },
-   { value: 'HARD', label: 'Hard' }
-]
+
 function ManageQuiz() {
+   const options = [
+      { value: 'EASY', label: 'Easy' },
+      { value: 'MEDIUM', label: 'Medium' },
+      { value: 'HARD', label: 'Hard' }
+   ]
    const inputImgRef = useRef(null);
    const [name, setName] = useState('');
    const [desc, setDesc] = useState('');
