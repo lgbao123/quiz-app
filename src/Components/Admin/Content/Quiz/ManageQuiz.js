@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import ListQuiz from './ListQuiz';
 import ModalUpdateQuiz from './ModalUpdateQuiz';
 import ModalDeleteQuiz from './ModalDeleteQuiz';
+import AssignQuiz from './AssignQuiz';
 
 function ManageQuiz() {
    const options = [
@@ -91,10 +92,10 @@ function ManageQuiz() {
       <div className='manage-quiz-container mt-5 container'>
          <h2 className='mb-5'>Manage Quizzes</h2>
          <Accordion defaultActiveKey="0">
-            <Accordion.Item eventKey="0" className='border-0'>
+            <Accordion.Item eventKey="0" >
                <Accordion.Header>Add New Quiz</Accordion.Header>
-               <Accordion.Body className='px-0'>
-                  <fieldset className="border rounded-3 p-3">
+               <Accordion.Body className='px-3'>
+                  <fieldset className="border rounded-3 p-3 mb-5">
                      <legend className="float-none w-auto px-3" >Quiz</legend>
                      <Form >
                         <FloatingLabel
@@ -136,15 +137,23 @@ function ManageQuiz() {
                      </Form>
                      <button className='btn btn-primary' onClick={handleAddQuiz}>Submit</button>
                   </fieldset>
+                  <ListQuiz
+                     quizList={quizList}
+                     handleClickBtnUpdate={handleClickBtnUpdate}
+                     handleClickBtnDelete={handleClickBtnDelete}
+                  />
+               </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="1" >
+               <Accordion.Header>Assign Quiz to User</Accordion.Header>
+               <Accordion.Body className='px-0'>
+
+                  <AssignQuiz />
                </Accordion.Body>
             </Accordion.Item>
 
          </Accordion>
-         <ListQuiz
-            quizList={quizList}
-            handleClickBtnUpdate={handleClickBtnUpdate}
-            handleClickBtnDelete={handleClickBtnDelete}
-         />
+
 
          <ModalUpdateQuiz
             show={showModalUpdate}

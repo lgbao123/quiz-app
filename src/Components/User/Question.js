@@ -1,4 +1,5 @@
 import React from 'react'
+import imgQ from '../../assets/question.png'
 
 function Question(props) {
    const { data } = props;
@@ -9,7 +10,7 @@ function Question(props) {
                <>
                   {data.image ?
                      (<div className='img-div '><img className="card-img" src={`data:image/jpeg;base64,${data.image}`} alt='question' /></div>) :
-                     (<div className='img-div '></div>)
+                     (<div className='img-div '><img className="card-img" src={imgQ} alt='question' /></div>)
                   }
 
                   <p className="question-title fw-bold my-3">Question {+data.idQuestion}:  <span className="fw-normal">{data.description} ?</span> </p>

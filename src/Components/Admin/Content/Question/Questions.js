@@ -10,8 +10,10 @@ import Lightbox from "react-awesome-lightbox";
 import './Questions.scss'
 import _ from 'lodash';
 import { toast } from 'react-toastify';
-import { getAllQuiz, postCreateNewAnswer, postCreateNewQuetion } from '../../../../service/apiService';
+import { getAllQuiz, getQuizWithQA, postCreateNewAnswer, postCreateNewQuetion, postUpSertQuizWithQA } from '../../../../service/apiService';
+import { getBase64, urltoFile } from '../../../../utils/utils';
 function Questions() {
+   const [isUpdate, setIsUpdate] = useState(false);
    const [selectQuiz, setSelectQuiz] = useState('');
    const [selectOptionQuiz, setSelectOptionQuiz] = useState('');
    const [isShowPreImgae, setIsShowPreImage] = useState(false);
@@ -20,15 +22,11 @@ function Questions() {
       "url": "",
       "title": ""
    })
-   const options = [
-      { value: 'EASY', label: 'Easy' },
-      { value: 'MEDIUM', label: 'Medium' },
-      { value: 'HARD', label: 'Hard' }
-   ]
+
    const intialQuestion = [{
       "id": uuidv4(),
       "description": "",
-      "image": '',
+      "imageFile": '',
       "imageName": "",
       "answers": [
          {
@@ -52,7 +50,7 @@ function Questions() {
          {
             "id": uuidv4(),
             "description": "",
-            "image": '',
+            "imageFile": '',
             "imageName": "",
             "answers": [
                {
@@ -105,7 +103,7 @@ function Questions() {
          }
          if (type === 'FILE') {
             if (event.target && event.target.files && event.target.files[0]) {
-               questionsClone[index].image = event.target.files[0];
+               questionsClone[index].imageFile = event.target.files[0];
                questionsClone[index].imageName = event.target.files[0].name;
             }
          }
@@ -148,23 +146,53 @@ function Questions() {
          questions.every((question) => question.isValid === true) &&
          questions.every((question) => question.answers.every((answer) => answer.isValid === true))
       ) {
-
-         // call api
-         let check = true
-         for (const question of questions) {
-            let res = await postCreateNewQuetion(+selectQuiz.value, question.description, question.image)
-            if (res && res.EC === 0) {
-               for (const answer of question.answers) {
-                  await postCreateNewAnswer(answer.description, answer.isCorrect, res.DT.id)
+         if (isUpdate) {
+            // call api for Update
+            const cloneQuestions = _.cloneDeep(questions);
+            for (let i = 0; i < cloneQuestions.length; i++) {
+               cloneQuestions[i].isValid = true;
+               delete cloneQuestions[i].isValid
+               if (cloneQuestions[i].imageFile) {
+                  cloneQuestions[i].imageFile = await getBase64(cloneQuestions[i].imageFile)
                }
-            } else { check = false }
+               for (let j = 0; j < cloneQuestions[i].answers.length; j++) {
+                  delete cloneQuestions[i].answers[j].isValid
+               }
 
+            }
+            // console.log(cloneQuestions);
+            const data = {
+               "quizId": selectQuiz.value,
+               "questions": cloneQuestions
+            }
+            // console.log(data);
+            let res = await postUpSertQuizWithQA(data)
+            if (res && res.EC === 0) {
+               toast.success(res.EM);
+               fetchQuizSelected();
+
+            }
+
+         } else {
+            // call api for Create
+            let check = true
+            for (const question of questions) {
+               let res = await postCreateNewQuetion(+selectQuiz.value, question.description, question.imageFile)
+               if (res && res.EC === 0) {
+                  for (const answer of question.answers) {
+                     await postCreateNewAnswer(answer.description, answer.isCorrect, res.DT.id)
+                  }
+               } else { check = false }
+
+            }
+            if (check) {
+               toast.success('Create succes');
+               // setQuestions(intialQuestion);
+               fetchQuizSelected();
+
+            }
          }
-         if (check) {
-            toast.success('SUCCESS');
-            setQuestions(intialQuestion);
-            setIsFirst(true);
-         }
+
       }
 
 
@@ -173,7 +201,7 @@ function Questions() {
    const handlePreviewImage = (question) => {
       setIsShowPreImage(true);
       setDataPreImage({
-         "url": URL.createObjectURL(question.image),
+         "url": URL.createObjectURL(question.imageFile),
          "title": question.imageName
       })
    }
@@ -197,6 +225,41 @@ function Questions() {
             return { value: quiz.id, label: `${quiz.id} - ${quiz.description}` }
          })
          setSelectOptionQuiz(temp);
+      }
+   }
+   //call api for selected quiz 
+   useEffect(() => {
+      fetchQuizSelected();
+   }, [selectQuiz])
+   const fetchQuizSelected = async () => {
+      if (selectQuiz) {
+         let res = await getQuizWithQA(selectQuiz.value);
+         if (res && res.EC === 0) {
+            if (!_.isEmpty(res.DT.qa)) {
+               const cloneQuestions = res.DT.qa;
+
+               for (let i = 0; i < cloneQuestions.length; i++) {
+                  cloneQuestions[i].isValid = true;
+                  if (cloneQuestions[i].imageFile) {
+                     cloneQuestions[i].imageFile
+                        = await urltoFile(`data:text/plain;base64,${cloneQuestions[i].imageFile}`, `quetion-${cloneQuestions[i].id}.png`, 'image/png')
+                     cloneQuestions[i].imageName = `quetion-${cloneQuestions[i].id}.png`
+                  }
+                  for (let j = 0; j < cloneQuestions[i].answers.length; j++) {
+                     cloneQuestions[i].answers[j].isValid = true
+                  }
+
+               }
+               // console.log(cloneQuestions);
+               setQuestions(cloneQuestions)
+               setIsUpdate(true);
+            } else {
+               setQuestions(intialQuestion);
+               setIsUpdate(false);
+            }
+            setIsFirst(true)
+
+         }
       }
    }
    return (
@@ -234,7 +297,8 @@ function Questions() {
                            <div className='col-xxl-4 input-file d-flex align-items-center gap-2'>
                               <label htmlFor={question.id} className="form-label"><RiImageAddFill /> </label>
                               <div className='span-div'>
-                                 <span> {question.imageName ?
+                                 <span> {question.imageFile ?
+
                                     <span className='pre-img-span'
                                        onClick={() => handlePreviewImage(question)}>{question.imageName}
                                     </span> :
@@ -253,43 +317,45 @@ function Questions() {
 
                         </div>
                      </div>
-                     {question && question.answers && question.answers.length && question.answers.map((answer, index) => {
-                        return (
-                           <div key={answer.id} className='answer-section row ms-3'>
-                              <div className='col-7 d-flex align-items-center gap-3'>
-                                 <div className="mb-3 icon-check">
-                                    <input type="checkbox" className="form-check-input"
-                                       checked={answer.isCorrect}
-                                       onChange={(e) => handleOnChangeAnswer('CHECKBOX', question.id, answer.id, e)}
-                                    />
+                     {
+                        question && question.answers && question.answers.length && question.answers.map((answer, index) => {
+                           return (
+                              <div key={answer.id} className='answer-section row ms-3'>
+                                 <div className='col-7 d-flex align-items-center gap-3'>
+                                    <div className="mb-3 icon-check">
+                                       <input type="checkbox" className="form-check-input"
+                                          checked={answer.isCorrect}
+                                          onChange={(e) => handleOnChangeAnswer('CHECKBOX', question.id, answer.id, e)}
+                                       />
+                                    </div>
+                                    <FloatingLabel
+                                       controlId="floatingInput2"
+                                       label={`Answer ${index + 1} `}
+                                       className="mb-3 col"
+                                    >
+                                       <Form.Control
+                                          // isInvalid={desc || isFirst ? false : true}
+                                          type="text" placeholder="Description"
+                                          value={answer.description}
+                                          onChange={(e) => handleOnChangeAnswer('INPUT', question.id, answer.id, e)}
+                                          isInvalid={answer.isValid || isFirst ? false : true}
+                                       />
+                                    </FloatingLabel>
                                  </div>
-                                 <FloatingLabel
-                                    controlId="floatingInput2"
-                                    label={`Answer ${index + 1} `}
-                                    className="mb-3 col"
-                                 >
-                                    <Form.Control
-                                       // isInvalid={desc || isFirst ? false : true}
-                                       type="text" placeholder="Description"
-                                       value={answer.description}
-                                       onChange={(e) => handleOnChangeAnswer('INPUT', question.id, answer.id, e)}
-                                       isInvalid={answer.isValid || isFirst ? false : true}
-                                    />
-                                 </FloatingLabel>
-                              </div>
-                              <div className='col btn-group align-items-center pb-3 '>
+                                 <div className='col btn-group align-items-center pb-3 '>
 
-                                 <div className='col d-flex gap-2'>
-                                    <BsPatchPlusFill onClick={() => handleAddOrRemoveAnswer("ADD", question.id, answer.id)} className='add-icon text-primary' />
-                                    {question.answers.length > 1 &&
-                                       <BsPatchMinusFill onClick={() => handleAddOrRemoveAnswer("REMOVE", question.id, answer.id)} className='minus-icon text-danger' />}
+                                    <div className='col d-flex gap-2'>
+                                       <BsPatchPlusFill onClick={() => handleAddOrRemoveAnswer("ADD", question.id, answer.id)} className='add-icon text-primary' />
+                                       {question.answers.length > 1 &&
+                                          <BsPatchMinusFill onClick={() => handleAddOrRemoveAnswer("REMOVE", question.id, answer.id)} className='minus-icon text-danger' />}
+                                    </div>
+
                                  </div>
-
                               </div>
-                           </div>
-                        )
+                           )
 
-                     })}
+                        })
+                     }
 
 
                   </div>
@@ -350,16 +416,18 @@ function Questions() {
 
             </div> */}
 
-         </Row>
+         </Row >
          <button className='mt-3 btn btn-warning' onClick={handleSubmitQuestionForQuiz}>Save Change</button>
-         {isShowPreImgae &&
+         {
+            isShowPreImgae &&
             <Lightbox
                image={dataPreImage.url}
                title={dataPreImage.title}
                onClose={() => { setIsShowPreImage(false) }}
 
-            />}
-      </div>
+            />
+         }
+      </div >
    )
 }
 

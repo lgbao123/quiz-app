@@ -5,6 +5,7 @@ import _ from 'lodash';
 import './QuizzDetail.scss'
 import Question from './Question';
 import ModalQuizzResult from './ModalQuizzResult';
+
 function QuizzDetail() {
    const [showResultModal, setShowResultModal] = useState(false);
    const [dataResultModal, setDataResultModal] = useState({});
