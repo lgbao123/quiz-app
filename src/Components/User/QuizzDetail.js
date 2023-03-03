@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getQuestionById, postSubmitAnswers } from '../../service/apiService';
 import _ from 'lodash';
 import './QuizzDetail.scss'
@@ -9,6 +9,7 @@ import RightContent from './Content/RightContent';
 import ModalQuizzSubmit from './ModalQuizzSubmit';
 import PerfectScrollbar from 'react-perfect-scrollbar'
 function QuizzDetail() {
+   const navigate = useNavigate();
    const [showResultModal, setShowResultModal] = useState(false);
    const [showSubmitModal, setShowSubmitModal] = useState(false);
    const [dataResultModal, setDataResultModal] = useState({});
@@ -119,6 +120,7 @@ function QuizzDetail() {
             <div className="row  ">
                <div className="col-md-8 col-sm-12 mt-5 px-0">
                   <div className="card">
+                     <p className='btn-back ms-3 mt-3' onClick={() => navigate('/user')}>&#60;&#60; Back to Quiz </p>
                      <div className="card-body">
                         <h4 className="quizz-title">Quiz {QuizzId} :{location.state.desc}</h4>
                         <hr></hr>

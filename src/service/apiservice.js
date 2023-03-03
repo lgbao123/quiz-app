@@ -30,7 +30,7 @@ const getUserWithPaginate = (page, limit) => {
 //    return axios.post(`api/v1/login`, { email, password })
 // }
 const postLoign = (email, password) => {
-   return axios.post(`api/v1/login`, { email, password, "delay": 3000 })
+   return axios.post(`api/v1/login`, { email, password, "delay": 1000 })
 }
 const postRegister = (email, password, username) => {
    return axios.post(`api/v1/register`, { email, password, username })
@@ -87,9 +87,12 @@ const postUpSertQuizWithQA = (data) => {
 const postAssignQuizUser = (quizId, userId) => {
    return axios.post('api/v1/quiz-assign-to-user', { quizId, userId });
 }
+const postLogout = (email, refresh_token) => {
+   return axios.post('api/v1/logout', { email, refresh_token });
+}
 export {
    postCreateNewUser, getAllUser, putUpdateUser, deleteUser,
    getUserWithPaginate, postLoign, postRegister, getQuizzByUser, getQuestionById,
    postSubmitAnswers, getAllQuiz, postAddQuiz, putUpdateQuiz, deleteQuiz,
-   postCreateNewQuetion, postCreateNewAnswer, getQuizWithQA, postUpSertQuizWithQA, postAssignQuizUser
+   postCreateNewQuetion, postCreateNewAnswer, getQuizWithQA, postUpSertQuizWithQA, postAssignQuizUser, postLogout
 }
