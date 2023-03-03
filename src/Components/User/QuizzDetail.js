@@ -8,6 +8,7 @@ import ModalQuizzResult from './ModalQuizzResult';
 import RightContent from './Content/RightContent';
 import ModalQuizzSubmit from './ModalQuizzSubmit';
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
 function QuizzDetail() {
    const navigate = useNavigate();
    const [showResultModal, setShowResultModal] = useState(false);
@@ -115,14 +116,22 @@ function QuizzDetail() {
    }
    return (
       <PerfectScrollbar>
-         <div className='quizz-detail-container container-md '>
+         <div className='quizz-detail-container container px-3 '>
+
 
             <div className="row  ">
+               <Breadcrumb className='bread-crumb px-0 '>
+                  <Breadcrumb.Item onClick={() => navigate('/')}>Home</Breadcrumb.Item>
+                  <Breadcrumb.Item onClick={() => navigate('/user')}>
+                     User
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item active>Quiz</Breadcrumb.Item>
+               </Breadcrumb>
                <div className="col-md-8 col-sm-12 mt-5 px-0">
                   <div className="card">
-                     <p className='btn-back ms-3 mt-3' onClick={() => navigate('/user')}>&#60;&#60; Back to Quiz </p>
+                     {/* <p className='btn-back ms-3 mt-3' onClick={() => navigate('/user')}>&#60;&#60; Back to Quiz </p> */}
                      <div className="card-body">
-                        <h4 className="quizz-title">Quiz {QuizzId} :{location.state.desc}</h4>
+                        <h4 className="quizz-title">Quiz {QuizzId} :{location?.state?.desc}</h4>
                         <hr></hr>
 
                         <Question

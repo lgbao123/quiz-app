@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import {
     ProSidebar,
     Menu,
@@ -24,6 +24,7 @@ const SideBar = ({
     handleToggleSidebar,
     handleCollapsedChange
 }) => {
+    const navigate = useNavigate();
     return (
         <ProSidebar
             image={sidebarBg ? sidebarBg : false}
@@ -51,8 +52,8 @@ const SideBar = ({
                                     letterSpacing: '1px'
                                 }}
                             >
-                                QUIZZES
-                                <NavLink to="/" />
+
+                                <span className='admin' onClick={() => navigate("/")}>ADMIN</span>
                             </div>
                             <MenuItem
                                 suffix={<FaAngleDoubleLeft />}
@@ -78,13 +79,15 @@ const SideBar = ({
                     </MenuItem>
                     <SubMenu title={'Features'} icon={<FaList />}>
                         <MenuItem>
-                            Quản lý người dùng
+                            Manage Users
                             <NavLink to="/admin/manage-user" />
                         </MenuItem>
-                        <MenuItem>Quản lý câu hỏi
+                        <MenuItem>
+                            Manage Quizzes
                             <NavLink to="/admin/manage-quizzes" />
                         </MenuItem>
-                        <MenuItem>Quản lý bài thi
+                        <MenuItem>
+                            Manage Quetions
                             <NavLink to="/admin/manage-question" />
                         </MenuItem>
 

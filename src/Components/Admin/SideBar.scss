@@ -1,9 +1,15 @@
 @import '~react-pro-sidebar/dist/scss/styles.scss';
 
+.admin {
+    cursor: pointer;
+}
+
 .sidebar-btn-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
+
+
 
     .sidebar-btn {
         padding: 1px 15px;

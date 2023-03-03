@@ -8,7 +8,12 @@ import './Header.scss'
 import { postLogout } from '../../service/apiService';
 import { toast } from 'react-toastify';
 import { doLogout } from '../../redux/action/userAction';
+import Profile from './Profile';
+import { useState } from 'react';
+
+
 function Header() {
+	const [showModalProfile, setShowModalProfile] = useState(false);
 	const navigate = useNavigate();
 	const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 	const account = useSelector(state => state.user.account);
@@ -29,40 +34,43 @@ function Header() {
 		}
 	}
 	return (
-		<div className='header-container'>
-			<Navbar bg="light" expand="md" className='fixed-top bg-lg-transparent p-4'>
-				<Container >
+		<>
+			<div className='header-container'>
+				<Navbar bg="light" expand="md" className='fixed-top  p-4'>
+					<Container >
 
-					<Link to='/' className='navbar-brand text-uppercase'>quizzes</Link>
-					<Navbar.Toggle aria-controls="basic-navbar-nav" />
-					<Navbar.Collapse id="basic-navbar-nav" className='navbar-list'>
-						<Nav className="me-auto menu-item">
-							<NavLink to='/' className='nav-link'>Home</NavLink>
-							<NavLink to='/user' className='nav-link'>User</NavLink>
-							<NavLink to='/admin' className='nav-link'>Admin</NavLink>
-						</Nav>
-						<Nav className="menu-item" >
-							{isAuthenticated === false ?
-								<><button className='btn-login btn btn-outline-dark  '
-									onClick={handleLogin}
-								>Login</button>
-									<button className='btn-signup btn btn-outline-dark'
-										onClick={handleRegister}
-									>Sign up</button>
-								</> :
-								<NavDropdown title={account.username} id="basic-nav-dropdown" className='me-md-5 drop-down-section' drop='down-centered' key="'down-centered'">
-									<NavDropdown.Item href="#action/3.3">Profile</NavDropdown.Item>
-									<NavDropdown.Item onClick={handleLogout}>Log out</NavDropdown.Item>
-								</NavDropdown>}
+						<Link to='/' className='navbar-brand text-uppercase'>quizzes</Link>
+						<Navbar.Toggle aria-controls="basic-navbar-nav" />
+						<Navbar.Collapse id="basic-navbar-nav" className='navbar-list'>
+							<Nav className="me-auto menu-item">
+								<NavLink to='/' className='nav-link'>Home</NavLink>
+								<NavLink to='/user' className='nav-link'>User</NavLink>
+								<NavLink to='/admin' className='nav-link'>Admin</NavLink>
+							</Nav>
+							<Nav className="menu-item" >
+								{isAuthenticated === false ?
+									<><button className='btn-login btn btn-outline-dark  '
+										onClick={handleLogin}
+									>Login</button>
+										<button className='btn-signup btn btn-outline-dark'
+											onClick={handleRegister}
+										>Sign up</button>
+									</> :
+									<NavDropdown title={account.username} id="basic-nav-dropdown" className='drop-down-section me-md-5 pe-xxl-4' drop='down-centered' key="'down-centered'">
+										<NavDropdown.Item onClick={() => setShowModalProfile(true)} >Profile</NavDropdown.Item>
+										<NavDropdown.Item onClick={handleLogout}>Log out</NavDropdown.Item>
+									</NavDropdown>}
 
+							</Nav>
+						</Navbar.Collapse>
+					</Container>
+				</Navbar>
+			</div>
 
-
-						</Nav>
-					</Navbar.Collapse>
-				</Container>
-			</Navbar>
-		</div>
-
+			<Profile
+				show={showModalProfile}
+				setShow={setShowModalProfile}
+			/></>
 	);
 }
 

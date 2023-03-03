@@ -2,6 +2,8 @@
 
 body {
 	overflow: hidden;
+	background-color: rgb(247, 249, 252);
+	;
 	// height: 100vh;
 }
 
@@ -11,6 +13,10 @@ body {
 	box-sizing: border-box;
 	font-family: 'Poppins', sans-serif;
 
+}
+
+.modal-80w {
+	min-width: 80%;
 }
 
 // :root {
@@ -24,40 +30,10 @@ body {
 // 	--greyText: rgb(190, 190, 190);
 // 	--inputColor: hsl(330, 12%, 97%);
 // }
-
-a {
-	text-decoration: none;
-}
-
-li {
-	list-style: none;
-}
-
-.flex {
-	display: flex;
-	align-items: center;
-}
-
-.grid {
-	display: grid;
-	align-items: center;
-}
-
-
-.icon {
-	cursor: pointer;
-	font-size: 2rem;
-	color: red;
-}
-
-img,
-video {
-	width: 100%;
-	height: auto;
-}
-
-input {
-	font-size: 100%;
+.drop-down-hide-toggle {
+	.dropdown-toggle::after {
+		display: none;
+	}
 }
 
 ::-ms-reveal {
