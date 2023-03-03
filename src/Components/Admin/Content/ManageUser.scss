@@ -1,0 +1,50 @@
+.manageUser-container {
+   padding: 0 0.7rem;
+   // width: 100%;
+
+   .list-user {
+      // background-color: red;
+      // width: 90%;
+      // background-color: red !important;
+      // height: 500px;
+   }
+
+}
+
+.modal-section {
+   .img-section {
+      width: 30% !important;
+      margin: 0 auto;
+      border: dashed 1px #CCC;
+      border-radius: 0.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 22px;
+      color: #CCC;
+      aspect-ratio: 5 /5;
+      padding: 0;
+      // border-radius: 50%;
+      // overflow: hidden;
+
+      img {
+         width: 100%;
+         height: 100%;
+         object-fit: cover;
+      }
+   }
+}
+
+.password-create-user {
+   position: relative;
+
+   .icon-eye {
+      font-size: 22px;
+      position: absolute;
+      top: 35px;
+      right: 0;
+      padding-right: 1.2rem;
+      cursor: pointer;
+      // background-color: red;
+   }
+}

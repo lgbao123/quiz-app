@@ -1,0 +1,32 @@
+@import '~react-pro-sidebar/dist/scss/styles.scss';
+
+.admin-container {
+    display: flex;
+    height: 100vh;
+    // background-color: blue;
+
+    .admin-sidebar {
+        .pro-sidebar {
+            height: 100vh !important;
+        }
+    }
+
+    .admin-content {
+        // background-color: red;
+        width: 100%;
+    }
+
+    .btn-toggle {
+        display: none;
+        padding: 0.3rem;
+        width: 30px;
+        height: 30px;
+    }
+
+    @media (max-width: $breakpoint-md) {
+        .btn-toggle {
+            display: flex;
+        }
+    }
+
+}

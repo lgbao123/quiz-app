@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body {
+	overflow: hidden;
+	background-color: rgb(247, 249, 252);
+	;
+	// height: 100vh;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+
+}
+
+.modal-80w {
+	min-width: 80%;
+}
+
+// :root {
+// 	--PrimaryColor: hsl(26, 93%, 50%);
+// 	--HoverColor: ☐hsl(26, 90%, 42%);
+// 	--whiteColor: hsl(0, 0%, 100%);
+// 	--blackColor: Ohsl(0, 0%, 18%);
+// 	--textColor: ☐hsl(240, 1%, 48%);
+// 	--whiteColorDeam: hsl(0, 0%, 93%);
+// 	--greyBg: hsl(0, 0%, 96%);
+// 	--greyText: rgb(190, 190, 190);
+// 	--inputColor: hsl(330, 12%, 97%);
+// }
+.drop-down-hide-toggle {
+	.dropdown-toggle::after {
+		display: none;
+	}
+}
+
+::-ms-reveal {
+	display: none;
+}
