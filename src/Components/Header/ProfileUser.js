@@ -12,6 +12,7 @@ function ProfileUser(props) {
    const [isvalidname, setIsValidName] = useState(false);
    const account = useSelector(state => state.user.account);
    const [username, setUserName] = useState('');
+   const [email, setEmail] = useState('');
    const [userImage, setUserImage] = useState('');
    const dispatch = useDispatch();
    // console.log(account);
@@ -55,7 +56,8 @@ function ProfileUser(props) {
       // setPreviewImageUser(URL.createObjectURL(userImage))
       setUserName(account.username);
       setPreviewImageUser(account.image);
-   }, [])
+      setEmail(account.email)
+   }, [account])
    //clean up
    useEffect(() => {
       return () => {
@@ -77,14 +79,21 @@ function ProfileUser(props) {
 
 
          <Row className="mb-3">
-            <Form.Group as={Col} md={12} className='mb-3' controlId="formGridUserName">
+            <Form.Group as={Col} md={6} className='mb-3' controlId="formGridUserName">
                <Form.Label>Username</Form.Label>
                <Form.Control isInvalid={isFirst ? false : !isvalidname} value={username} onChange={(e) => setUserName(e.target.value)} />
                <Form.Control.Feedback type="invalid">
                   Username must be more than 3 characters
                </Form.Control.Feedback>
             </Form.Group>
-
+            <Form.Group as={Col} md={6} controlId="formGridEmail" className='mb-3'>
+               <Form.Label>Email</Form.Label>
+               <Form.Control type="email" placeholder="Enter email" value={email}
+                  onChange={(e) => setEmail(e.target.value)} disabled />
+               <Form.Control.Feedback type="invalid">
+                  Invalid Email
+               </Form.Control.Feedback>
+            </Form.Group>
 
          </Row>
          <Row>

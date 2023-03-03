@@ -10,7 +10,7 @@ function RightContent(props) {
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
    const naviagte = useNavigate();
-   const { questionList } = props;
+   const { questionList, isFinish } = props;
    const [currentIndex, setCurrentIndex] = useState(0);
    const handleTimeUp = () => {
       // props.handleFinish();
@@ -44,6 +44,7 @@ function RightContent(props) {
             <div className="count-time">
                <CountDown
                   handleTimeUp={handleTimeUp}
+                  isFinish={isFinish}
                />
             </div>
             <div className="icon-group"

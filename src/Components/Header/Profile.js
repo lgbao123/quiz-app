@@ -4,7 +4,6 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import History from './History';
 import ProfileUser from './ProfileUser';
 import ResetPassword from './ResetPassword';
 function Profile(props) {
@@ -40,9 +39,7 @@ function Profile(props) {
                   <Tab eventKey="ResetPassword" title="Reset Password">
                      <ResetPassword isUpdatePass={isUpdatePass} setIsUpdatePass={setIsUpdatePass} handleClose={handleClose} />
                   </Tab>
-                  <Tab eventKey="History" title="History">
-                     <History />
-                  </Tab>
+
 
                </Tabs>
             </Modal.Body>

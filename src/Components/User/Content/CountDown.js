@@ -15,12 +15,15 @@ function CountDown(props) {
          return
       }
       const timer = setInterval(() => {
-         setCount(count - 1)
+         if (!props.isFinish) {
+
+            setCount(count - 1)
+         }
       }, 1000);
       return () => {
          clearInterval(timer)
       }
-   }, [count])
+   }, [count, props.isFinish])
    return (
       <>
          {toHHMMSS(count)}

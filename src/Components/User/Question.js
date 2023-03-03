@@ -2,7 +2,7 @@ import React from 'react'
 import imgQ from '../../assets/question.png'
 
 function Question(props) {
-   const { data } = props;
+   const { data, isFinish } = props;
    return (
       <>
          <div className='quizz-content mt-3'>
@@ -22,6 +22,7 @@ function Question(props) {
                               id={`question${data.idQuestion}-answers${item.id}`}
                               onChange={() => props.handleCheckBox(data.idQuestion, item.id)}
                               checked={item.isSelected}
+                              disabled={isFinish ? true : false}
                            />
                            <label className="form-check-label" htmlFor={`question${data.idQuestion}-answers${item.id}`}>
                               <p className="card-text"> {item.description}</p>

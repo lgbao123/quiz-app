@@ -13,6 +13,7 @@ function QuizzDetail() {
    const navigate = useNavigate();
    const [showResultModal, setShowResultModal] = useState(false);
    const [showSubmitModal, setShowSubmitModal] = useState(false);
+   const [isFinish, setIsFinish] = useState(false);
    const [dataResultModal, setDataResultModal] = useState({});
    const params = useParams();
    const QuizzId = params.id;
@@ -68,10 +69,11 @@ function QuizzDetail() {
       let res = await postSubmitAnswers(payload);
       if (res && res.EC === 0) {
          setDataResultModal(res.DT)
-         console.log('check', res);
+         // console.log('check', res);
          setShowResultModal(true);
       }
       setShowSubmitModal(false)
+      setIsFinish(true);
       // console.log(payload);
    }
    const handleCheckBox = (qId, aId) => {
@@ -137,6 +139,7 @@ function QuizzDetail() {
                         <Question
                            data={questionList && questionList.length ? questionList[index] : []}
                            handleCheckBox={handleCheckBox}
+                           isFinish={isFinish}
                         />
                      </div>
                      <div className="card-footer d-flex justify-content-center gap-3 align-items-center">
@@ -153,6 +156,7 @@ function QuizzDetail() {
                      handleFinish={handleFinish}
                      setIndex={setIndex}
                      index={index}
+                     isFinish={isFinish}
                      setShowSubmitModal={setShowSubmitModal}
 
                   />

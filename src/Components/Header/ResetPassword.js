@@ -59,7 +59,7 @@ function ResetPassword(props) {
    return (
       <Form >
          <Row className="mb-3">
-            <Form.Group className='password-create-user' as={Col} controlId="formGridPassword">
+            <Form.Group className='password-create-user' as={Col} controlId="formGridPassword1">
                <Form.Label>Old Password</Form.Label>
                <Form.Control isInvalid={isFirst ? false : !isvalidOldPass} type={isShowOldPass ? "text" : "password"} value={oldPass}
                   onChange={(e) => setOldPass(e.target.value)} />
@@ -76,7 +76,7 @@ function ResetPassword(props) {
             </Form.Group>
          </Row>
          <Row className="mb-3">
-            <Form.Group className='password-create-user' as={Col} controlId="formGridPassword">
+            <Form.Group className='password-create-user' as={Col} controlId="formGridPassword2">
                <Form.Label>New Password</Form.Label>
                <Form.Control isInvalid={isFirst ? false : !isvalidNewPass} type={isShowNewPass ? "text" : "password"} value={newPass}
                   onChange={(e) => setNewPass(e.target.value)} />
@@ -93,7 +93,7 @@ function ResetPassword(props) {
             </Form.Group>
          </Row>
          <Row className="mb-3">
-            <Form.Group className='password-create-user' as={Col} controlId="formGridPassword">
+            <Form.Group className='password-create-user' as={Col} controlId="formGridPassword3">
                <Form.Label>Confirm Password</Form.Label>
                <Form.Control isInvalid={isFirst ? false : !isvalidConfirmPass} type={isShowConfirmPass ? "text" : "password"} value={confirmPass}
                   onChange={(e) => setConfirmPass(e.target.value)} />
