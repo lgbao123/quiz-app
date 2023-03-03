@@ -1,6 +1,6 @@
 import React from 'react'
 import App from './App';
-import User from './Components/User/User';
+
 import Admin from './Components/Admin/Admin';
 import HomePage from './Components/HomePage/HomePage';
 import DashBoard from './Components/Admin/Content/DashBoard';
@@ -13,6 +13,7 @@ import QuizzList from './Components/User/QuizzList';
 import QuizzDetail from './Components/User/QuizzDetail';
 import ManageQuiz from './Components/Admin/Content/Quiz/ManageQuiz';
 import Questions from './Components/Admin/Content/Question/Questions';
+import PrivateRouter from './routes/PrivateRouter';
 const NotFound = () => {
    return (
       <div className='container mt-3 alert alert-danger'>404 NOT FOUND
@@ -24,10 +25,10 @@ function Layout() {
          <Routes>
             <Route path='/' element={<App />} >
                <Route index element={<HomePage />} />
-               <Route path='/user' element={<QuizzList />} />
+               <Route path='/user' element={<PrivateRouter><QuizzList /></PrivateRouter>} />
             </Route>
-            <Route path='/quizz/:id' element={<QuizzDetail />} />
-            <Route path='/admin' element={<Admin />} >
+            <Route path='/quizz/:id' element={<PrivateRouter> <QuizzDetail /></PrivateRouter>} />
+            <Route path='/admin' element={<PrivateRouter><Admin /></PrivateRouter>} >
                <Route index element={<DashBoard />} />
                <Route path='manage-user' element={<ManageUser />} />
                <Route path='manage-quizzes' element={<ManageQuiz />} />

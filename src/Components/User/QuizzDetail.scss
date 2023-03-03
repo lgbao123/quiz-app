@@ -1,4 +1,6 @@
 .quizz-detail-container {
+   height: 100vh;
+
    .card-body {
 
 
@@ -16,6 +18,65 @@
                object-fit: cover;
 
             }
+         }
+      }
+   }
+
+   .right-content-container {
+
+      .header {
+         color: white;
+         background-color: #f66;
+
+         .count-time {
+            font-size: 20px;
+         }
+
+         .icon-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+
+            font-size: 16px;
+
+            .icon {
+               font-size: 22px;
+               color: white;
+            }
+         }
+      }
+
+      .main {
+         display: flex;
+         flex-wrap: wrap;
+         // justify-content: center;
+         gap: 17px;
+         padding: 16px;
+
+         .question {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #6666;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            &:hover {
+               color: #f66;
+            }
+
+            &.selected {
+               background-color: #999999 !important;
+            }
+
+            &.clicked {
+               color: #f66;
+               background-color: #ebebeb;
+            }
+
          }
       }
    }
