@@ -21,7 +21,7 @@ const NotFound = () => {
 }
 function Layout() {
    return (
-      <>
+      <><React.Suspense fallback={<div>loading...</div>}>
          <Routes>
             <Route path='/' element={<App />} >
                <Route index element={<HomePage />} />
@@ -38,6 +38,8 @@ function Layout() {
             <Route path='/register' element={<Register />} />
             <Route path="*" element={<NotFound />} />
          </Routes>
+      </React.Suspense>
+
          <ToastContainer
             position="top-right"
             autoClose={3000}

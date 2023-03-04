@@ -1,8 +1,24 @@
 import React from 'react'
 import imgQ from '../../assets/question.png'
-
+import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai'
 function Question(props) {
-   const { data, isFinish } = props;
+   const { data, isFinish, isShowResult } = props;
+   const handleCheck = (isCorrect, isSelected) => {
+      if (!isCorrect && !isSelected) {
+         return false
+      }
+      // if (isCorrect && isSelected) {
+      //    return 'correct'
+      // }
+      // if (isCorrect && !isSelected) {
+      //    return 'correct'
+      // }
+      // if (!isCorrect && isSelected) {
+      //    return 'incorrect'
+      // }
+      return true;
+
+   }
    return (
       <>
          <div className='quizz-content mt-3'>
@@ -27,6 +43,11 @@ function Question(props) {
                            <label className="form-check-label" htmlFor={`question${data.idQuestion}-answers${item.id}`}>
                               <p className="card-text"> {item.description}</p>
                            </label>
+                           {isFinish && isShowResult && ((!item.isCorrect && !item.isSelected) ? false : (!item.isCorrect && item.isSelected) ?
+                              <label className='incorrect'><AiOutlineClose /></label> :
+                              <label className='correct'><AiOutlineCheck /></label>)
+                           }
+
                         </div>
                      )
                   })}

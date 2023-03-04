@@ -33,10 +33,26 @@
 
             }
          }
+
+         .correct {
+            color: green;
+            font-size: 18px;
+            margin-left: 0.5rem;
+         }
+
+         .incorrect {
+            color: red;
+            font-size: 18px;
+            margin-left: 0.5rem;
+         }
       }
    }
 
    .right-content-container {
+      .disabled {
+         pointer-events: none;
+         opacity: 0.4;
+      }
 
       .header {
          color: white;

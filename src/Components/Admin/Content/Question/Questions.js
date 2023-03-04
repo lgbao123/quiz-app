@@ -250,7 +250,7 @@ function Questions() {
                   }
 
                }
-               // console.log(cloneQuestions);
+               console.log(cloneQuestions);
                setQuestions(cloneQuestions)
                setIsUpdate(true);
             } else {

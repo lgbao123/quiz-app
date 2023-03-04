@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { getQuestionById, postSubmitAnswers } from '../../service/apiService';
+import { getQuestionById, getQuizWithQA, postSubmitAnswers } from '../../service/apiService';
 import _ from 'lodash';
 import './QuizzDetail.scss'
 import Question from './Question';
@@ -9,11 +9,14 @@ import RightContent from './Content/RightContent';
 import ModalQuizzSubmit from './ModalQuizzSubmit';
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import { urltoFile } from '../../utils/utils';
 function QuizzDetail() {
    const navigate = useNavigate();
+   const [questionWithAnswer, setQuestionWithAnswer] = useState([]);
    const [showResultModal, setShowResultModal] = useState(false);
    const [showSubmitModal, setShowSubmitModal] = useState(false);
    const [isFinish, setIsFinish] = useState(false);
+   const [isShowResult, setIsShowResult] = useState(false);
    const [dataResultModal, setDataResultModal] = useState({});
    const params = useParams();
    const QuizzId = params.id;
@@ -22,6 +25,7 @@ function QuizzDetail() {
    const [index, setIndex] = useState(0);
    useEffect(() => {
       fetchQuestion(QuizzId);
+      fetchQuizSelected(QuizzId);
    }, [QuizzId]);
    const handlePrev = () => {
       if (index > 0) {
@@ -50,18 +54,27 @@ function QuizzDetail() {
       //           }
       //       ]
       //   }
-      const answers = questionList && questionList.length > 0 && questionList.map((question) => {
+      const cloneQuestion = _.cloneDeep(questionList)
+      // console.log('check1 : ', cloneQuestion);
+      // console.log('check2 : ', questionList);
+      const answers = cloneQuestion && cloneQuestion.length > 0 && cloneQuestion.map((question) => {
          let userAnswerId = [];
+         let iFinalQ = questionWithAnswer.findIndex((questionF) => +questionF.id === +question.idQuestion)
+         // console.log(iFinalQ);
          question.answers.forEach((answer) => {
+            let iFinalA = questionWithAnswer[iFinalQ].answers.findIndex((answerF) => +answerF.id === +answer.id)
+            answer.isCorrect = questionWithAnswer[iFinalQ].answers[iFinalA].isCorrect;
             if (answer.isSelected) {
                userAnswerId.push(answer.id)
             }
+
          })
          return {
             "questionId": +question.idQuestion,
             "userAnswerId": userAnswerId
          }
       })
+      setQuestionList(cloneQuestion);
       let payload = {
          "quizId": +QuizzId,
          "answers": answers || []
@@ -116,6 +129,35 @@ function QuizzDetail() {
          setQuestionList(data);
       }
    }
+   const fetchQuizSelected = async (id) => {
+      if (id) {
+         let res = await getQuizWithQA(id);
+         if (res && res.EC === 0) {
+            if (!_.isEmpty(res.DT.qa)) {
+               const cloneQuestions = res.DT.qa;
+
+               for (let i = 0; i < cloneQuestions.length; i++) {
+                  cloneQuestions[i].isValid = true;
+                  if (cloneQuestions[i].imageFile) {
+                     cloneQuestions[i].imageFile
+                        = await urltoFile(`data:text/plain;base64,${cloneQuestions[i].imageFile}`, `quetion-${cloneQuestions[i].id}.png`, 'image/png')
+                     cloneQuestions[i].imageName = `quetion-${cloneQuestions[i].id}.png`
+                  }
+                  for (let j = 0; j < cloneQuestions[i].answers.length; j++) {
+                     cloneQuestions[i].answers[j].isValid = true
+                  }
+
+               }
+               // console.log('check clone', cloneQuestions);
+               setQuestionWithAnswer(cloneQuestions)
+            } else {
+
+            }
+
+
+         }
+      }
+   }
    return (
       <PerfectScrollbar>
          <div className='quizz-detail-container container px-3 '>
@@ -140,12 +182,13 @@ function QuizzDetail() {
                            data={questionList && questionList.length ? questionList[index] : []}
                            handleCheckBox={handleCheckBox}
                            isFinish={isFinish}
+                           isShowResult={isShowResult}
                         />
                      </div>
                      <div className="card-footer d-flex justify-content-center gap-3 align-items-center">
                         <button onClick={handlePrev} className="btn btn-secondary">Prev</button>
                         <button onClick={handleNext} className="btn btn-primary">Next</button>
-                        <button onClick={handleSubmit} className="btn btn-warning">Finish</button>
+                        <button onClick={handleSubmit} disabled={isFinish} className="btn btn-warning">Finish</button>
                      </div>
                   </div>
                </div>
@@ -168,6 +211,7 @@ function QuizzDetail() {
                show={showResultModal}
                setShow={setShowResultModal}
                dataResultModal={dataResultModal}
+               setIsShowResult={setIsShowResult}
             />
             <ModalQuizzSubmit
                show={showSubmitModal}
