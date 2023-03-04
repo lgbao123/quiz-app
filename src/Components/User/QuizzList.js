@@ -33,7 +33,7 @@ function QuizzList() {
                            </div>
                            <div className="card-footer d-flex justify-content-between align-items-center">
                               <button onClick={() => navigate(`/quizz/${item.id}`, { 'state': { 'desc': item.description } })} className="btn btn-primary">Start now</button>
-                              <small className="text-muted">Last updated 3 mins ago</small>
+
                            </div>
                         </div>
                      </div>
