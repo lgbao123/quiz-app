@@ -46,7 +46,7 @@ function ModalViewUser(props) {
          setUserName(dataView.username);
          setRole(dataView.role)
          if (dataView.image) {
-            setPreviewImageUser(`data:image/png;base64,${dataView.image}`)
+            setPreviewImageUser(dataView.image)
          } else { setPreviewImageUser('') }
       }
       // console.log(dataUpdate.role);

@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
 import { doLogin } from '../../redux/action/userAction'
 import Language from '../Header/Language'
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import { getBase64ImageFromUrl } from '../../utils/utils'
 function Login() {
    const [email, setEmail] = useState('')
    const [password, setPassword] = useState('');
@@ -32,13 +33,23 @@ function Login() {
          //call api
          setIsLoading(true);
          let res = await postLoign(email, password);
+         console.log(res);
          if (res && res.EC === 0) {
+            res.DT.image = await getBase64ImageFromUrl(res.DT.image)
+               .then(result => {
+                  return (result.split(',')[1])
+
+               })
+               .catch(err => console.error(err));
             dispatch(doLogin(res));
             toast.success(res.EM);
             setIsLoading(false);
             navigate("/");
+
+
          }
          if (res && res.EC !== 0) {
+            res.EM = Array.isArray(res.EM) ? res.EM[0] : res.EM
             setIsLoading(false);
             toast.error(res.EM);
          }

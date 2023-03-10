@@ -5,7 +5,7 @@ const postCreateNewUser = (email, password, username, role, userImage) => {
    data.append("password", password)
    data.append("username", username)
    data.append("role", role)
-   data.append("userImage", userImage)
+   data.append("image", userImage)
    return axios.post('api/v1/participant', data)
 }
 const getAllUser = () => {
@@ -16,7 +16,8 @@ const putUpdateUser = (id, username, role, userImage) => {
    data.append("id", id)
    data.append("username", username)
    data.append("role", role)
-   data.append("userImage", userImage)
+   if (userImage) data.append("image", userImage)
+
    return axios.put('api/v1/participant', data)
 }
 const deleteUser = (id) => {
@@ -30,7 +31,7 @@ const getUserWithPaginate = (page, limit) => {
 //    return axios.post(`api/v1/login`, { email, password })
 // }
 const postLoign = (email, password) => {
-   return axios.post(`api/v1/login`, { email, password, "delay": 1000 })
+   return axios.post(`api/v1/auth/login`, { email, password })
 }
 const postRegister = (email, password, username) => {
    return axios.post(`api/v1/register`, { email, password, username })
@@ -88,17 +89,17 @@ const postAssignQuizUser = (quizId, userId) => {
    return axios.post('api/v1/quiz-assign-to-user', { quizId, userId });
 }
 const postLogout = (email, refresh_token) => {
-   return axios.post('api/v1/logout', { email, refresh_token });
+   return axios.post('api/v1/auth/logout', { email, refresh_token });
 }
 const getDashboard = () => {
-   return axios.get('api/v1/overview');
+   return axios.get('api/v1/participant/overview');
 }
 const postUpdateProfile = (username, userImage) => {
    const data = new FormData()
    data.append("username", username)
    data.append("userImage", userImage)
 
-   return axios.post(`api/v1/profile`, data)
+   return axios.post(`api/v1/auth/update-profile`, data)
 }
 const postUpdatePassword = (current_password, new_password) => {
 
