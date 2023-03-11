@@ -40,7 +40,7 @@ function AssignQuiz() {
    const fetchUserList = async () => {
       let res = await getAllUser();
       if (res && res.EC === 0) {
-         let temp = res.DT
+         let temp = res?.DT?.users ?? []
          temp = temp.map((user) => {
             return { value: user.id, label: user.email }
          })

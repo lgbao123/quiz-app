@@ -17,6 +17,20 @@
 
    }
 
+   .img-div-list {
+      width: 100%;
+      // margin: 0 auto;
+      height: 300px;
+      // border: 1px solid black;
+      // background-color: red;
+
+      img {
+         width: 100%;
+         height: 100%;
+         object-fit: cover
+      }
+   }
+
    .img-div {
       // width: 500px;
       // margin: 0 auto;

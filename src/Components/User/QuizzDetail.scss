@@ -19,7 +19,11 @@
 
 
       .quizz-content {
-
+         .card-text {
+            &:hover {
+               cursor: pointer;
+            }
+         }
 
          .img-div {
             width: 50%;

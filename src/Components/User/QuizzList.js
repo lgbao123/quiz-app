@@ -26,9 +26,9 @@ function QuizzList() {
                   return (
                      <div key={`quizz-${item.id}`} className="col-xxl-4 col-md-6 mt-5 ">
                         <div className="card">
-                           <div className='img-div'><img className="card-img-top" src={`data:image/jpeg;base64,${item.image}`} alt="Card " /></div>
+                           <div className='img-div-list'><img className="card-img-top" src={`data:image/jpeg;base64,${item.image}`} alt="Card " /></div>
                            <div className="card-body">
-                              <h5 className="card-title">Quiz {index + 1}</h5>
+                              <h5 className="card-title">{item.name}</h5>
                               <p className="card-text">{item.description}</p>
                            </div>
                            <div className="card-footer d-flex justify-content-between align-items-center">

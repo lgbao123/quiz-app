@@ -17,8 +17,8 @@ function ModalDeleteQuiz(props) {
          let res = await deleteQuiz(dataDelete.id);
          if (res && res.EC === 0) {
             toast.success(res.EM);
-            handleClose();
             await props.fetchListQuiz();
+            handleClose();
          }
          if (res && res.EC !== 0) {
             toast.error(res.EM);

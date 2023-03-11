@@ -45,6 +45,7 @@ function RightContent(props) {
                <CountDown
                   handleTimeUp={handleTimeUp}
                   isFinish={isFinish}
+                  time={props.time}
                />
             </div>
             <div className="icon-group"

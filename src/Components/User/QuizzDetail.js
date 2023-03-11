@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { getQuestionById, getQuizWithQA, postSubmitAnswers } from '../../service/apiService';
+import { getQuestionById, getQuizById, getQuizWithQA, postSubmitAnswers } from '../../service/apiService';
 import _ from 'lodash';
 import './QuizzDetail.scss'
 import Question from './Question';
@@ -23,9 +23,11 @@ function QuizzDetail() {
    const location = useLocation();
    const [questionList, setQuestionList] = useState([]);
    const [index, setIndex] = useState(0);
+   const [time, setTime] = useState(0);
    useEffect(() => {
       fetchQuestion(QuizzId);
       fetchQuizSelected(QuizzId);
+      fetchQuizTime(QuizzId)
    }, [QuizzId]);
    const handlePrev = () => {
       if (index > 0) {
@@ -58,19 +60,13 @@ function QuizzDetail() {
       // console.log('check1 : ', cloneQuestion);
       // console.log('check2 : ', questionList);
       const answers = cloneQuestion && cloneQuestion.length > 0 && cloneQuestion.map((question) => {
-         let userAnswerId = [];
-         let iFinalQ = questionWithAnswer.findIndex((questionF) => +questionF.id === +question.idQuestion)
-         // console.log(iFinalQ);
-         question.answers.forEach((answer) => {
-            let iFinalA = questionWithAnswer[iFinalQ].answers.findIndex((answerF) => +answerF.id === +answer.id)
-            answer.isCorrect = questionWithAnswer[iFinalQ].answers[iFinalA].isCorrect;
-            if (answer.isSelected) {
-               userAnswerId.push(answer.id)
-            }
 
-         })
+         let userAnswerId = [];
+         let filterAnswer = question.answers.filter(answer => answer.isSelected === true)
+         filterAnswer = filterAnswer.map(ans => ans.id)
+         userAnswerId = [...filterAnswer]
          return {
-            "questionId": +question.idQuestion,
+            "questionId": +question.id,
             "userAnswerId": userAnswerId
          }
       })
@@ -79,6 +75,7 @@ function QuizzDetail() {
          "quizId": +QuizzId,
          "answers": answers || []
       }
+      // console.log(payload);
       let res = await postSubmitAnswers(payload);
       if (res && res.EC === 0) {
          setDataResultModal(res.DT)
@@ -90,16 +87,16 @@ function QuizzDetail() {
       // console.log(payload);
    }
    const handleCheckBox = (qId, aId) => {
-      console.log('aid', aId);
-      console.log(qId);
+      // console.log('aid', aId);
+      // console.log(qId);
       let questionListCLone = _.cloneDeep(questionList);
-      const question = questionListCLone.find((item) => item.idQuestion === qId)
+      const question = questionListCLone.find((item) => item.id === qId)
       question && question.answers && question.answers.forEach((item) => {
          if (item.id === aId) {
             item.isSelected = !item.isSelected
          }
       })
-      const tempindex = questionListCLone.findIndex((item) => item.idQuestion === qId)
+      const tempindex = questionListCLone.findIndex((item) => item.id === qId)
       tempindex > -1 && (questionListCLone[tempindex] = question);
       setQuestionList(questionListCLone);
 
@@ -108,24 +105,33 @@ function QuizzDetail() {
    const fetchQuestion = async (id) => {
       let res = await getQuestionById(id);
       if (res && res.EC === 0) {
-         const data = _.chain(res.DT)
-            .groupBy("id")
-            .map((values, key) => {
-               let desc = '';
-               let img = '';
-               let ans = values.reduce((acc, item) => {
-                  item.answers.isSelected = false;
-                  return [...acc, item.answers]
-               }, [])
-               values.forEach((item, index) => {
-                  if (index === 0) {
-                     desc = item.description;
-                     img = item.image
-                  }
-               })
-               return ({ "idQuestion": key, "description": desc, "image": img, "answers": ans })
+         // const data = _.chain(res.DT)
+         //    .groupBy("id")
+         //    .map((values, key) => {
+         //       let desc = '';
+         //       let img = '';
+         //       let ans = values.reduce((acc, item) => {
+         //          item.answers.isSelected = false;
+         //          return [...acc, item.answers]
+         //       }, [])
+         //       values.forEach((item, index) => {
+         //          if (index === 0) {
+         //             desc = item.description;
+         //             img = item.image
+         //          }
+         //       })
+         //       return ({ "idQuestion": key, "description": desc, "image": img, "answers": ans })
+         //    })
+         //    .value()
+         const data = res?.DT?.qa
+         data.forEach(question => {
+            let countCorrect = 0
+            question.answers.forEach(ans => {
+               ans.isSelected = false
+               if (+ans.isCorrect === 1) countCorrect += 1
             })
-            .value()
+            question.countCorrect = countCorrect
+         })
          setQuestionList(data);
       }
    }
@@ -158,6 +164,15 @@ function QuizzDetail() {
          }
       }
    }
+   const fetchQuizTime = async (id) => {
+      if (id) {
+         let res = await getQuizById(id);
+         if (res && res.EC === 0) {
+            const time = res?.DT[0]?.time || 90
+            setTime(time)
+         }
+      }
+   }
    return (
       <PerfectScrollbar>
          <div className='quizz-detail-container container px-3 '>
@@ -180,6 +195,7 @@ function QuizzDetail() {
 
                         <Question
                            data={questionList && questionList.length ? questionList[index] : []}
+                           index={index}
                            handleCheckBox={handleCheckBox}
                            isFinish={isFinish}
                            isShowResult={isShowResult}
@@ -201,6 +217,7 @@ function QuizzDetail() {
                      index={index}
                      isFinish={isFinish}
                      setShowSubmitModal={setShowSubmitModal}
+                     time={time}
 
                   />
                </div>

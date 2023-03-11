@@ -112,14 +112,14 @@ function Login() {
                                  <input id="customCheck1" type="checkbox" className="form-check-input" />
                                  <label for="customCheck1" className="form-check-label">Remember password</label>
                               </div> */}
-                                 <p className='btn-back text-muted' >Forgot password? </p>
+                                 {/* <p className='btn-back text-muted' >Forgot password? </p> */}
                                  <div className="d-grid gap-2 my-5">
                                     <button disabled={isLoading} type="button"
                                        className="btn btn-login btn-dark btn-block text-uppercase mb-2 rounded-pill shadow-sm"
                                        onClick={handleSubmitLogin}
                                     >  {isLoading && <FaSpinner className='spinner' />}
 
-                                       <span >Sign in </span></button>
+                                       <span >Log in </span></button>
                                  </div>
                                  <p className='btn-back' onClick={() => navigate('/')}>&#60;&#60; Back to Homepage </p>
                               </form>
