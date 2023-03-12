@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
 import { doLogin } from '../../redux/action/userAction'
 import Language from '../Header/Language'
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import { getBase64ImageFromUrl } from '../../utils/utils'
 function Login() {
    const [email, setEmail] = useState('')
    const [password, setPassword] = useState('');
@@ -32,13 +33,23 @@ function Login() {
          //call api
          setIsLoading(true);
          let res = await postLoign(email, password);
+         console.log(res);
          if (res && res.EC === 0) {
+            res.DT.image = await getBase64ImageFromUrl(res.DT.image)
+               .then(result => {
+                  return (result.split(',')[1])
+
+               })
+               .catch(err => console.error(err));
             dispatch(doLogin(res));
             toast.success(res.EM);
             setIsLoading(false);
             navigate("/");
+
+
          }
          if (res && res.EC !== 0) {
+            res.EM = Array.isArray(res.EM) ? res.EM[0] : res.EM
             setIsLoading(false);
             toast.error(res.EM);
          }
@@ -101,14 +112,14 @@ function Login() {
                                  <input id="customCheck1" type="checkbox" className="form-check-input" />
                                  <label for="customCheck1" className="form-check-label">Remember password</label>
                               </div> */}
-                                 <p className='btn-back text-muted' >Forgot password? </p>
+                                 {/* <p className='btn-back text-muted' >Forgot password? </p> */}
                                  <div className="d-grid gap-2 my-5">
                                     <button disabled={isLoading} type="button"
                                        className="btn btn-login btn-dark btn-block text-uppercase mb-2 rounded-pill shadow-sm"
                                        onClick={handleSubmitLogin}
                                     >  {isLoading && <FaSpinner className='spinner' />}
 
-                                       <span >Sign in </span></button>
+                                       <span >Log in </span></button>
                                  </div>
                                  <p className='btn-back' onClick={() => navigate('/')}>&#60;&#60; Back to Homepage </p>
                               </form>

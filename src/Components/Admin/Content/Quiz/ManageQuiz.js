@@ -22,6 +22,7 @@ function ManageQuiz() {
    const inputImgRef = useRef(null);
    const [name, setName] = useState('');
    const [desc, setDesc] = useState('');
+   const [time, setTime] = useState(90);
    const [type, setType] = useState({ label: "Easy", value: "EASY" });
    const [image, setImage] = useState('');
    const [preImage, setPreImage] = useState('');
@@ -43,8 +44,8 @@ function ManageQuiz() {
    }
    const handleAddQuiz = async () => {
       setIsFirst(false);
-      if (name && desc && image) {
-         let res = await postAddQuiz(desc, name, type?.value, image);
+      if (name && name.length >= 3 && desc && image && time) {
+         let res = await postAddQuiz(desc, name, type?.value, image, time);
          if (res && res.EC === 0) {
             toast.success(res.EM);
             await fetchListQuiz();
@@ -104,7 +105,7 @@ function ManageQuiz() {
                            className="mb-3"
                         >
                            <Form.Control
-                              isInvalid={name || isFirst ? false : true} type="text" placeholder="Name"
+                              isInvalid={(name && name.length >= 3) || isFirst ? false : true} type="text" placeholder="Name"
                               value={name} onChange={(e) => setName(e.currentTarget.value)} />
                         </FloatingLabel>
                         <FloatingLabel
@@ -115,6 +116,17 @@ function ManageQuiz() {
                            <Form.Control
                               isInvalid={desc || isFirst ? false : true}
                               type="text" placeholder="Description" value={desc} onChange={(e) => setDesc(e.currentTarget.value)} />
+
+                        </FloatingLabel>
+                        <FloatingLabel
+                           controlId="floatingInput3"
+                           label="Time (minutes)"
+                           className="mb-3"
+                        >
+                           <Form.Control
+                              isInvalid={+time || isFirst ? false : true}
+                              type="text" placeholder="Time" value={time} onChange={(e) => setTime(e.currentTarget.value)} />
+
                         </FloatingLabel>
                         <Row>
                            <Select className='my-2' options={options} placeholder={'Quiz type ...'} value={type} onChange={setType} />

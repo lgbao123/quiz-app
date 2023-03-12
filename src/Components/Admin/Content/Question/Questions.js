@@ -151,9 +151,10 @@ function Questions() {
             const cloneQuestions = _.cloneDeep(questions);
             for (let i = 0; i < cloneQuestions.length; i++) {
                cloneQuestions[i].isValid = true;
+               delete cloneQuestions[i].imageName
                delete cloneQuestions[i].isValid
                if (cloneQuestions[i].imageFile) {
-                  cloneQuestions[i].imageFile = await getBase64(cloneQuestions[i].imageFile)
+                  cloneQuestions[i].imageFile = (await getBase64(cloneQuestions[i].imageFile)).split(',')[1]
                }
                for (let j = 0; j < cloneQuestions[i].answers.length; j++) {
                   delete cloneQuestions[i].answers[j].isValid
@@ -247,13 +248,15 @@ function Questions() {
                   }
                   for (let j = 0; j < cloneQuestions[i].answers.length; j++) {
                      cloneQuestions[i].answers[j].isValid = true
+                     cloneQuestions[i].answers[j].isCorrect = Boolean(cloneQuestions[i].answers[j].isCorrect)
                   }
 
                }
-               // console.log(cloneQuestions);
+               console.log(cloneQuestions);
                setQuestions(cloneQuestions)
                setIsUpdate(true);
             } else {
+               console.log(1234564);
                setQuestions(intialQuestion);
                setIsUpdate(false);
             }
@@ -362,59 +365,6 @@ function Questions() {
 
                )
             })}
-            {/* <div className='questions-main'>
-               <div className='question-section row mb-3 mb-sm-0'>
-                  <div className='col-6'>
-                     <label className="form-label">Add Quetions:</label>
-                     <FloatingLabel
-                        controlId="floatingInput2"
-                        label="Description"
-                        className="mb-3"
-                     >
-                        <Form.Control
-                           // isInvalid={desc || isFirst ? false : true}
-                           type="text" placeholder="Description" />
-                     </FloatingLabel>
-                  </div>
-                  <div className='col-6 btn-group align-items-sm-center flex-column flex-sm-row gap-sm-3 pt-3'>
-                     <div className='col-xxl-4 input-file d-flex align-items-center gap-2'>
-                        <label htmlFor='file-question' className="form-label"><RiImageAddFill /> </label>
-                        <span> 0 File is upload</span>
-                        <input type='file' id='file-question' hidden />
-                     </div>
-                     <div className='col d-flex gap-2'>
-                        <BsPatchPlusFill className='add-icon text-primary' />
-                        <BsPatchMinusFill className='minus-icon text-danger' />
-                     </div>
-
-                  </div>
-               </div>
-               <div className='answer-section row ms-3'>
-                  <div className='col-7 d-flex align-items-center gap-3'>
-                     <div className="mb-3 icon-check">
-                        <input type="checkbox" className="form-check-input" />
-                     </div>
-                     <FloatingLabel
-                        controlId="floatingInput2"
-                        label="Description"
-                        className="mb-3 col"
-                     >
-                        <Form.Control
-                           // isInvalid={desc || isFirst ? false : true}
-                           type="text" placeholder="Description" />
-                     </FloatingLabel>
-                  </div>
-                  <div className='col btn-group align-items-center pb-3 '>
-
-                     <div className='col d-flex gap-2'>
-                        <BsPatchPlusFill className='add-icon text-primary' />
-                        <BsPatchMinusFill className='minus-icon text-danger' />
-                     </div>
-
-                  </div>
-               </div>
-
-            </div> */}
 
          </Row >
          <button className='mt-3 btn btn-warning' onClick={handleSubmitQuestionForQuiz}>Save Change</button>

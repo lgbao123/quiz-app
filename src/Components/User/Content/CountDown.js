@@ -7,8 +7,13 @@ function CountDown(props) {
       const timeString = date.toISOString().substring(11, 19);
       return timeString
    }
+
    //time 
-   const [count, setCount] = useState(1 * 3600 + 30 * 60)
+
+   const [count, setCount] = useState(60)
+   useEffect(() => {
+      setCount(+props.time * 60)
+   }, [props.time])
    useEffect(() => {
       if (count === 0) {
          props.handleTimeUp();

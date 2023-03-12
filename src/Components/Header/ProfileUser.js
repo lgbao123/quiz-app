@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { doLogin, doUpdateProfile } from '../../redux/action/userAction';
 import { postUpdateProfile } from '../../service/apiService';
-import { getBase64 } from '../../utils/utils';
+import { getBase64, urltoFile } from '../../utils/utils';
 function ProfileUser(props) {
    const [isFirst, setIsFirst] = useState(true);
    const [isvalidname, setIsValidName] = useState(false);
@@ -74,6 +74,17 @@ function ProfileUser(props) {
          setIsUpdate(false);
       }
    }, [isUpdate])
+
+   const initImageUser = async (img) => {
+      const fileimg = await urltoFile(`data:text/plain;base64,${img}`, `profile.png`, 'image/png')
+      setUserImage(fileimg)
+   }
+   useEffect(() => {
+      if (account && account.image) {
+         initImageUser(account.image)
+      }
+   }, [])
+
    return (
       <Form >
 

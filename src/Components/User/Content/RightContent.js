@@ -21,8 +21,8 @@ function RightContent(props) {
    const handleCheckedAnswer = (question) => {
       if (question && question.answers && question.answers.length) {
          const isUnAnswer = question.answers.every(answer => answer.isSelected === false)
-         console.log('check ques', question);
-         console.log('check is', isUnAnswer);
+         // console.log('check ques', question);
+         // console.log('check is', isUnAnswer);
          if (!isUnAnswer) {
             return 'selected'
          }
@@ -35,8 +35,8 @@ function RightContent(props) {
    return (
       <div className="card right-content-container">
 
-         <div className=" d-flex justify-content-between align-items-center p-3 header">
-            <div className="icon-group"
+         <div className={"d-flex justify-content-between align-items-center p-3 header"}>
+            <div className={"icon-group " + (isFinish ? " disabled" : " ")}
                onClick={props.setShowSubmitModal}
             >
                <AiOutlineCheck className='icon' />Finish
@@ -45,6 +45,7 @@ function RightContent(props) {
                <CountDown
                   handleTimeUp={handleTimeUp}
                   isFinish={isFinish}
+                  time={props.time}
                />
             </div>
             <div className="icon-group"

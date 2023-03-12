@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import _ from 'lodash'
 
 function ModalQuizzResult(props) {
-   const { show, setShow, dataResultModal } = props;
+   const { show, setShow, dataResultModal, setIsShowResult } = props;
 
    const handleClose = () => {
       setShow(false);
@@ -27,9 +27,13 @@ function ModalQuizzResult(props) {
                <Button variant="secondary" onClick={handleClose}>
                   Close
                </Button>
-               <Button variant="primary" onClick={handleClose}>
+               <Button variant="primary" onClick={() => { setIsShowResult(true); handleClose(); }}>
+                  Show Result
+               </Button>
+               <Button variant="warning" onClick={handleClose}>
                   Comfirm
                </Button>
+
             </Modal.Footer>
          </Modal>
       </>

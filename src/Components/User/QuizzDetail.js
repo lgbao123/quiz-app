@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { getQuestionById, postSubmitAnswers } from '../../service/apiService';
+import { getQuestionById, getQuizById, getQuizWithQA, postSubmitAnswers } from '../../service/apiService';
 import _ from 'lodash';
 import './QuizzDetail.scss'
 import Question from './Question';
@@ -9,19 +9,25 @@ import RightContent from './Content/RightContent';
 import ModalQuizzSubmit from './ModalQuizzSubmit';
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import { urltoFile } from '../../utils/utils';
 function QuizzDetail() {
    const navigate = useNavigate();
+   const [questionWithAnswer, setQuestionWithAnswer] = useState([]);
    const [showResultModal, setShowResultModal] = useState(false);
    const [showSubmitModal, setShowSubmitModal] = useState(false);
    const [isFinish, setIsFinish] = useState(false);
+   const [isShowResult, setIsShowResult] = useState(false);
    const [dataResultModal, setDataResultModal] = useState({});
    const params = useParams();
    const QuizzId = params.id;
    const location = useLocation();
    const [questionList, setQuestionList] = useState([]);
    const [index, setIndex] = useState(0);
+   const [time, setTime] = useState(0);
    useEffect(() => {
       fetchQuestion(QuizzId);
+      fetchQuizSelected(QuizzId);
+      fetchQuizTime(QuizzId)
    }, [QuizzId]);
    const handlePrev = () => {
       if (index > 0) {
@@ -50,22 +56,26 @@ function QuizzDetail() {
       //           }
       //       ]
       //   }
-      const answers = questionList && questionList.length > 0 && questionList.map((question) => {
+      const cloneQuestion = _.cloneDeep(questionList)
+      // console.log('check1 : ', cloneQuestion);
+      // console.log('check2 : ', questionList);
+      const answers = cloneQuestion && cloneQuestion.length > 0 && cloneQuestion.map((question) => {
+
          let userAnswerId = [];
-         question.answers.forEach((answer) => {
-            if (answer.isSelected) {
-               userAnswerId.push(answer.id)
-            }
-         })
+         let filterAnswer = question.answers.filter(answer => answer.isSelected === true)
+         filterAnswer = filterAnswer.map(ans => ans.id)
+         userAnswerId = [...filterAnswer]
          return {
-            "questionId": +question.idQuestion,
+            "questionId": +question.id,
             "userAnswerId": userAnswerId
          }
       })
+      setQuestionList(cloneQuestion);
       let payload = {
          "quizId": +QuizzId,
          "answers": answers || []
       }
+      // console.log(payload);
       let res = await postSubmitAnswers(payload);
       if (res && res.EC === 0) {
          setDataResultModal(res.DT)
@@ -77,16 +87,16 @@ function QuizzDetail() {
       // console.log(payload);
    }
    const handleCheckBox = (qId, aId) => {
-      console.log('aid', aId);
-      console.log(qId);
+      // console.log('aid', aId);
+      // console.log(qId);
       let questionListCLone = _.cloneDeep(questionList);
-      const question = questionListCLone.find((item) => item.idQuestion === qId)
+      const question = questionListCLone.find((item) => item.id === qId)
       question && question.answers && question.answers.forEach((item) => {
          if (item.id === aId) {
             item.isSelected = !item.isSelected
          }
       })
-      const tempindex = questionListCLone.findIndex((item) => item.idQuestion === qId)
+      const tempindex = questionListCLone.findIndex((item) => item.id === qId)
       tempindex > -1 && (questionListCLone[tempindex] = question);
       setQuestionList(questionListCLone);
 
@@ -95,25 +105,72 @@ function QuizzDetail() {
    const fetchQuestion = async (id) => {
       let res = await getQuestionById(id);
       if (res && res.EC === 0) {
-         const data = _.chain(res.DT)
-            .groupBy("id")
-            .map((values, key) => {
-               let desc = '';
-               let img = '';
-               let ans = values.reduce((acc, item) => {
-                  item.answers.isSelected = false;
-                  return [...acc, item.answers]
-               }, [])
-               values.forEach((item, index) => {
-                  if (index === 0) {
-                     desc = item.description;
-                     img = item.image
-                  }
-               })
-               return ({ "idQuestion": key, "description": desc, "image": img, "answers": ans })
+         // const data = _.chain(res.DT)
+         //    .groupBy("id")
+         //    .map((values, key) => {
+         //       let desc = '';
+         //       let img = '';
+         //       let ans = values.reduce((acc, item) => {
+         //          item.answers.isSelected = false;
+         //          return [...acc, item.answers]
+         //       }, [])
+         //       values.forEach((item, index) => {
+         //          if (index === 0) {
+         //             desc = item.description;
+         //             img = item.image
+         //          }
+         //       })
+         //       return ({ "idQuestion": key, "description": desc, "image": img, "answers": ans })
+         //    })
+         //    .value()
+         const data = res?.DT?.qa
+         data.forEach(question => {
+            let countCorrect = 0
+            question.answers.forEach(ans => {
+               ans.isSelected = false
+               if (+ans.isCorrect === 1) countCorrect += 1
             })
-            .value()
+            question.countCorrect = countCorrect
+         })
          setQuestionList(data);
+      }
+   }
+   const fetchQuizSelected = async (id) => {
+      if (id) {
+         let res = await getQuizWithQA(id);
+         if (res && res.EC === 0) {
+            if (!_.isEmpty(res.DT.qa)) {
+               const cloneQuestions = res.DT.qa;
+
+               for (let i = 0; i < cloneQuestions.length; i++) {
+                  cloneQuestions[i].isValid = true;
+                  if (cloneQuestions[i].imageFile) {
+                     cloneQuestions[i].imageFile
+                        = await urltoFile(`data:text/plain;base64,${cloneQuestions[i].imageFile}`, `quetion-${cloneQuestions[i].id}.png`, 'image/png')
+                     cloneQuestions[i].imageName = `quetion-${cloneQuestions[i].id}.png`
+                  }
+                  for (let j = 0; j < cloneQuestions[i].answers.length; j++) {
+                     cloneQuestions[i].answers[j].isValid = true
+                  }
+
+               }
+               // console.log('check clone', cloneQuestions);
+               setQuestionWithAnswer(cloneQuestions)
+            } else {
+
+            }
+
+
+         }
+      }
+   }
+   const fetchQuizTime = async (id) => {
+      if (id) {
+         let res = await getQuizById(id);
+         if (res && res.EC === 0) {
+            const time = res?.DT[0]?.time || 90
+            setTime(time)
+         }
       }
    }
    return (
@@ -138,14 +195,16 @@ function QuizzDetail() {
 
                         <Question
                            data={questionList && questionList.length ? questionList[index] : []}
+                           index={index}
                            handleCheckBox={handleCheckBox}
                            isFinish={isFinish}
+                           isShowResult={isShowResult}
                         />
                      </div>
                      <div className="card-footer d-flex justify-content-center gap-3 align-items-center">
                         <button onClick={handlePrev} className="btn btn-secondary">Prev</button>
                         <button onClick={handleNext} className="btn btn-primary">Next</button>
-                        <button onClick={handleSubmit} className="btn btn-warning">Finish</button>
+                        <button onClick={handleSubmit} disabled={isFinish} className="btn btn-warning">Finish</button>
                      </div>
                   </div>
                </div>
@@ -158,6 +217,7 @@ function QuizzDetail() {
                      index={index}
                      isFinish={isFinish}
                      setShowSubmitModal={setShowSubmitModal}
+                     time={time}
 
                   />
                </div>
@@ -168,6 +228,7 @@ function QuizzDetail() {
                show={showResultModal}
                setShow={setShowResultModal}
                dataResultModal={dataResultModal}
+               setIsShowResult={setIsShowResult}
             />
             <ModalQuizzSubmit
                show={showSubmitModal}

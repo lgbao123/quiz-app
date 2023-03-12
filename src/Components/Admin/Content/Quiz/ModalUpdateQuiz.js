@@ -19,6 +19,7 @@ function ModalUpdateQuiz(props) {
    const inputImgRef = useRef(null);
    const [name, setName] = useState('');
    const [desc, setDesc] = useState('');
+   const [time, setTime] = useState(0);
    const [type, setType] = useState({ label: "Easy", value: "EASY" });
    const [image, setImage] = useState('');
    const [preImage, setPreImage] = useState('');
@@ -45,7 +46,7 @@ function ModalUpdateQuiz(props) {
    }
    const handleSubmitUpdate = async () => {
 
-      let res = await putUpdateQuiz(dataUpdate.id, desc, name, type?.value, image);
+      let res = await putUpdateQuiz(dataUpdate.id, desc, name, type?.value, image, time);
       if (res && res.EC === 0) {
          toast.success(res.EM);
          await props.fetchListQuiz();
@@ -66,8 +67,10 @@ function ModalUpdateQuiz(props) {
    // handle  update data
    useEffect(() => {
       if (!_.isEmpty(dataUpdate)) {
+
          setName(dataUpdate.name);
-         setType({ value: dataUpdate.difficulty.toUpperCase(), label: dataUpdate.difficulty.charAt(0).toUpperCase() + dataUpdate.difficulty.slice(1) });
+         setTime(dataUpdate.time);
+         setType({ value: dataUpdate.type.toUpperCase(), label: dataUpdate.type.charAt(0).toUpperCase() + dataUpdate.type.slice(1) });
          setDesc(dataUpdate.description);
          if (dataUpdate.image) {
             setPreImage(`data:image/png;base64,${dataUpdate.image}`);
@@ -95,7 +98,7 @@ function ModalUpdateQuiz(props) {
                         className="mb-3"
                      >
                         <Form.Control
-                           isInvalid={name ? false : true} type="text" placeholder="Name"
+                           isInvalid={name && name.length >= 3 ? false : true} type="text" placeholder="Name"
                            value={name} onChange={(e) => setName(e.currentTarget.value)} />
                      </FloatingLabel>
                      <FloatingLabel
@@ -106,6 +109,15 @@ function ModalUpdateQuiz(props) {
                         <Form.Control
                            isInvalid={desc ? false : true}
                            type="text" placeholder="Description" value={desc} onChange={(e) => setDesc(e.currentTarget.value)} />
+                     </FloatingLabel>
+                     <FloatingLabel
+                        controlId="floatingInput2"
+                        label="Time (minutes)"
+                        className="mb-3"
+                     >
+                        <Form.Control
+                           isInvalid={+time ? false : true}
+                           type="text" placeholder="Time" value={time} onChange={(e) => setTime(e.currentTarget.value)} />
                      </FloatingLabel>
                      <Row>
                         <Select className='my-2' options={options} placeholder={'Quiz type ...'} value={type} onChange={setType} />
@@ -125,7 +137,7 @@ function ModalUpdateQuiz(props) {
                         </div>
                      </Row>
                   </Form>
-                  <button className='btn btn-primary' onClick={handleSubmitUpdate}>Submit</button>
+                  {/* <button className='btn btn-primary' onClick={handleSubmitUpdate}>Submit</button> */}
                </fieldset>
             </Modal.Body>
             <Modal.Footer>

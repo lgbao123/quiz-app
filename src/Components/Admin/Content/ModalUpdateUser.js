@@ -7,13 +7,14 @@ import Row from 'react-bootstrap/Row';
 import { toast } from 'react-toastify';
 import { putUpdateUser } from '../../../service/apiService';
 import _ from 'lodash'
+import { getFileFromUrl } from '../../../utils/utils';
 function ModalUpdateUser(props) {
    const { show, setShow, dataUpdate } = props;
    const [email, setEmail] = useState('')
    const [password, setPassWord] = useState('')
    const [username, setUserName] = useState("")
    const [role, setRole] = useState("USER")
-   const [userImage, setUserImage] = useState('')
+   const [userImage, setUserImage] = useState(null)
    const [previewimageuser, setPreviewImageUser] = useState('')
    const [isvalidname, setIsValidName] = useState(true);
 
@@ -41,6 +42,7 @@ function ModalUpdateUser(props) {
 
          // Call API
          // Gửi ảnh dùng formdata , dùng object sẽ không gửi được file
+
          let data = await putUpdateUser(dataUpdate.id, username, role, userImage)
 
          if (data && data.EC === 0) {
@@ -67,6 +69,10 @@ function ModalUpdateUser(props) {
       username ? setIsValidName(true) : setIsValidName(false);
    }, [username])
    // handle update data
+   // const initImageUser = async (url) => {
+   //    const fileimg = await getFileFromUrl(url, 'user.jpg')
+   //    setUserImage(fileimg)
+   // }
    useEffect(() => {
       // check emty dataUpdate ( object) trước khi set  nếu ko lần đầu sẽ set undefined cho các state 
       if (!_.isEmpty(dataUpdate)) {
@@ -75,7 +81,8 @@ function ModalUpdateUser(props) {
          setUserName(dataUpdate.username);
          setRole(dataUpdate.role)
          if (dataUpdate.image) {
-            setPreviewImageUser(`data:image/png;base64,${dataUpdate.image}`)
+            // initImageUser(dataUpdate.image)
+            setPreviewImageUser(dataUpdate.image)
          } else { setPreviewImageUser('') }
       }
       // console.log(dataUpdate.role);
